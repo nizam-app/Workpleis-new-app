@@ -8,7 +8,7 @@ import 'package:workpleis/features/client/screen/client_home_screen.dart';
 
 import 'error_screen.dart';
 class AppRouter {
-  static final String initial = ClientHomeScreen.routeName;
+  static final String initial = SplashScreen.routeName;
  static final GoRouter appRouter = GoRouter(
       initialLocation:initial,
       errorBuilder: (context, state) {
