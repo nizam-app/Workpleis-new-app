@@ -1,16 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:workpleis/features/auth/screens/account_successful.dart';
 
 import '../../../core/constants/color_control/all_color.dart';
 
-class CheckingLiveness extends StatelessWidget {
+class CheckingLiveness extends StatefulWidget {
   const CheckingLiveness({super.key});
 
   static const String routeName = '/checking-liveness';
 
   @override
+  State<CheckingLiveness> createState() => _CheckingLivenessState();
+}
+
+class _CheckingLivenessState extends State<CheckingLiveness>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _anim;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3), // ✅ 3 sec
+    );
+
+    _anim = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+
+    _controller.forward(); // ✅ start loading once
+
+    // ✅ 3 seconds পরে auto next (close this page)
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      context.push(AccountSuccessful.routeName);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const neon = Color(0xFFC6F151);
+    const neon = Color(0xFFCAFF45);
 
     return Scaffold(
       backgroundColor: AllColor.white,
@@ -19,7 +56,7 @@ class CheckingLiveness extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 22.w),
           child: Column(
             children: [
-              SizedBox(height: 150.h),
+              const Spacer(),
 
               /// ✅ Neon check circle (same-to-same)
               const _NeonCheckBadge(neon: neon),
@@ -30,7 +67,7 @@ class CheckingLiveness extends StatelessWidget {
                 "Checking liveness...",
                 style: TextStyle(
                   fontFamily: 'sf_pro',
-                  fontSize: 16.sp,
+                  fontSize: 28.sp,
                   fontWeight: FontWeight.w500,
                   color: AllColor.black,
                 ),
@@ -38,24 +75,22 @@ class CheckingLiveness extends StatelessWidget {
 
               SizedBox(height: 12.h),
 
-              /// ✅ Progress bar (rounded)
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: 0.42), // screenshot-ish fill
-                duration: const Duration(milliseconds: 900),
-                curve: Curves.easeOut,
-                builder: (context, v, _) => _ProgressBar(value: v),
+              /// ✅ Progress bar (0 -> 100% in 3 sec)
+              AnimatedBuilder(
+                animation: _anim,
+                builder: (context, _) => _ProgressBar(value: _anim.value),
               ),
 
-              const Spacer(),
+              SizedBox(height: 220.h),
 
-              /// ✅ Workpleis logo (use your asset path)
+              /// ✅ Workpleis logo
               Image.asset(
-                "assets/images/workpleis_logo.png",
-                width: 160.w,
+                "assets/images/updatelogo.png",
+                width: 162.w,
                 fit: BoxFit.contain,
               ),
 
-              SizedBox(height: 36.h),
+              const Spacer(),
             ],
           ),
         ),
@@ -72,33 +107,30 @@ class _NeonCheckBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 90.w,
-      height: 90.w,
+      width: 120.w,
+      height: 120.w,
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // outer soft ring
           Container(
-            width: 90.w,
-            height: 90.w,
+            width: 120.w,
+            height: 120.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: neon.withOpacity(0.18),
+              color: neon.withOpacity(0.30),
             ),
           ),
-          // mid ring
           Container(
-            width: 62.w,
-            height: 62.w,
+            width: 86.w,
+            height: 86.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: neon.withOpacity(0.35),
+              color: neon.withOpacity(0.60),
             ),
           ),
-          // inner solid
           Container(
-            width: 44.w,
-            height: 44.w,
+            width: 50.w,
+            height: 50.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: neon,
@@ -106,7 +138,7 @@ class _NeonCheckBadge extends StatelessWidget {
           ),
           Icon(
             Icons.check,
-            size: 18.sp,
+            size: 24.sp,
             color: Colors.black,
           ),
         ],

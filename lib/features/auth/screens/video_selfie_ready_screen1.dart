@@ -7,9 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:workpleis/core/widget/global_get_started_button.dart';
+import 'package:workpleis/features/auth/screens/checking_liveness.dart';
 
 import '../../../core/constants/color_control/all_color.dart';
-import '../../../core/widget/global_logo.dart';
 import '../data/front_id_data.dart';
 
 class VideoSelfieReadyScreen1 extends StatefulWidget {
@@ -141,7 +141,6 @@ class _VideoSelfieReadyScreen1State extends State<VideoSelfieReadyScreen1> {
           child: Column(
             children: [
               SizedBox(height: 10.h),
-
               /// ✅ close
               Align(
                 alignment: Alignment.centerLeft,
@@ -149,7 +148,7 @@ class _VideoSelfieReadyScreen1State extends State<VideoSelfieReadyScreen1> {
                   onTap: () => context.pop(),
                   borderRadius: BorderRadius.circular(14.r),
                   child: Container(
-                    height: 40.w,
+                    height: 40.h,
                     width: 40.w,
                     decoration: BoxDecoration(
                       color: AllColor.grey70,
@@ -162,7 +161,8 @@ class _VideoSelfieReadyScreen1State extends State<VideoSelfieReadyScreen1> {
                 ),
               ),
 
-              SizedBox(height: 22.h),
+              SizedBox(height: 100.h),
+
 
               /// ✅ main preview block (pill + circle)
               Expanded(
@@ -263,19 +263,19 @@ class _VideoSelfieReadyScreen1State extends State<VideoSelfieReadyScreen1> {
 
                         /// ✅ pill (same look)
                         Positioned(
-                          top: 0,
+                          top: 10,
+                          left: 20,
+                          right: 20,
                           child: SizedBox(
-                            width: double.infinity,
-                            height: 56.h,
-                            child:
-                                CustomButton(
-                                    text: "Move Closer",
-                                    textColor: AllColor.white,
-                                    bgColor: AllColor.black,
-                                    onTap: (){
-
-                                })
-
+                            height: 64.h,
+                            child: CustomButton(
+                              text: "Move Closer",
+                              textColor: AllColor.white,
+                              bgColor: AllColor.black,
+                              onTap: () {
+                                context.push(CheckingLiveness.routeName);
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -286,8 +286,7 @@ class _VideoSelfieReadyScreen1State extends State<VideoSelfieReadyScreen1> {
 
               /// ✅ bottom logo (same style)
             Image.asset("assets/images/updatelogo.png", fit: BoxFit.cover,),
-
-              SizedBox(height: 18.h),
+              SizedBox(height: 150.h),
             ],
           ),
         ),
