@@ -31,9 +31,7 @@ class AccountSuccessful extends StatelessWidget {
                     height: 160.h,
                     fit: BoxFit.contain,
                   ),
-
                   SizedBox(height: 24.h),
-
                   Text(
                     'Account Successful',
                     textAlign: TextAlign.center,
