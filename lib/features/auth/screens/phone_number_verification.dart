@@ -221,6 +221,7 @@ class _PhoneNumberVerificationState extends ConsumerState<PhoneNumberVerificatio
           ),
         ),
       ),
+      //BottomNavigationBar
       bottomNavigationBar: Padding(
         padding: EdgeInsets.fromLTRB(22.w, 0, 22.w, 24.h),
         child: SizedBox(
@@ -255,6 +256,7 @@ class _PhoneNumberVerificationState extends ConsumerState<PhoneNumberVerificatio
         borderRadius: BorderRadius.circular(16.r),
         borderSide: const BorderSide(color: AllColor.grey50, width: 1),
       ),
+
 
     );
   }
