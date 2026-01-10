@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/features/role_screen/screen/genNotifications.dart';
+import 'package:workpleis/features/role_screen/widget/custom_next_button.dart';
 
 enum UserRole { client, provider }
 
@@ -105,43 +106,15 @@ class _SeclectTypeScreenState extends State<SeclectTypeScreen> {
                 SizedBox(height: 32.h),
 
                 /// Next button
-                SizedBox(
-                  width: double.infinity,
-                  height: 56.h,
-                  child: ElevatedButton(
-                    onPressed: _selected == null
-                        ? null
-                        : () {
-                      context.push(Gennotifications.routeName);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF03051A),
-                      disabledBackgroundColor:
-                      const Color(0xFF03051A).withOpacity(0.25),
-                      shape: const StadiumBorder(),
-                      elevation: 0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Next',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'sf_Pro',
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(width: 8.w),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16.sp,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
+
+                // button
+                SizedBox(height: 180.h),
+
+                CustomNextButton(
+                  enabled: _selected != null,
+                  onPressed: () {
+                    context.push(Gennotifications.routeName);
+                  },
                 ),
 
                 SizedBox(height: 16.h),
@@ -175,7 +148,6 @@ class _SeclectTypeScreenState extends State<SeclectTypeScreen> {
           ),
         ),
       ),
-
     );
   }
 }
@@ -196,8 +168,9 @@ class _RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-    selected ? Colors.black : Colors.black.withOpacity(0.18);
+    final borderColor = selected
+        ? Colors.black
+        : Colors.black.withOpacity(0.18);
 
     return GestureDetector(
       onTap: onTap,
@@ -247,11 +220,7 @@ class _RoleCard extends StatelessWidget {
                 color: selected ? Colors.black : Colors.white,
               ),
               child: selected
-                  ? Icon(
-                Icons.check,
-                size: 14.sp,
-                color: Colors.white,
-              )
+                  ? Icon(Icons.check, size: 14.sp, color: Colors.white)
                   : null,
             ),
           ],
