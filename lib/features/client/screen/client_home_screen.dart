@@ -99,7 +99,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               _Section(
                 title: 'Your Active Jobs',
                 child: SizedBox(
-                  height: 340.h,
+                  // Trim height so the cards hug their content and avoid excess
+                  // empty space beneath each item.
+                  height: 210.h,
                   child: ListView.separated(
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     scrollDirection: Axis.horizontal,
@@ -551,7 +553,7 @@ class _ActiveJobCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
@@ -715,29 +717,40 @@ class _ActiveJobCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Status with Orange Dot
+                SizedBox(width: 130.w),
+                // Status badge
                 if (job.status != null)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 6.w,
-                        height: 6.w,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFF6B00),
-                          shape: BoxShape.circle,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 3.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF6ECE2),
+                      borderRadius: BorderRadius.circular(999.r),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 8.w,
+                          height: 8.w,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFBF7A12),
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        job.status!,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xFFFF6B00),
+                        SizedBox(width: 6.w),
+                        Text(
+                          job.status!,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFFBF7A12),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -806,7 +819,12 @@ class _TrendingJobCard extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            padding: EdgeInsets.only(
+              left: 12.w,
+              right: 12.w,
+              top: 6.h,
+              bottom: 0,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
