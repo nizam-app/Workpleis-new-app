@@ -7,9 +7,15 @@ final selectedIndexProvider = StateProvider<int>((ref) => 0);
 class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({super.key});
   static const String routeName = '/BottomNavBar';
+  
   final List<Widget> _pages = const [
-
+    _PlaceholderPage(title: 'Home'),
+    _PlaceholderPage(title: 'Chat'),
+    _PlaceholderPage(title: 'Categories'),
+    _PlaceholderPage(title: 'Cart'),
+    _PlaceholderPage(title: 'Account'),
   ];
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Added WidgetRef
@@ -58,6 +64,22 @@ class BottomNavBar extends ConsumerWidget {
             label: "Account",
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PlaceholderPage extends StatelessWidget {
+  const _PlaceholderPage({required this.title});
+  
+  final String title;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }

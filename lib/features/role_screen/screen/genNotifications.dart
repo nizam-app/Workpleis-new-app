@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../auth/screens/login_screen.dart';
 
-class Gennotifications extends StatelessWidget {
+import '../../auth/screens/business_login_screen.dart';
+import '../screen/seclect_role_screen.dart';
+import '../screen/seclect_type_screen.dart';
+
+import '../widget/custom_next_button.dart';
+
+
+class Gennotifications extends ConsumerWidget {
   const Gennotifications({super.key});
 
   static const String routeName = '/notification';
 
+  void _navigateToLogin(BuildContext context, WidgetRef ref) {
+    final selectedRole = ref.read(selectedRoleProvider);
+    final selectedType = ref.read(selectedTypeProvider);
+    
+    // If user selected "I'm a Client" + "For Business", go to BusinessLoginScreen
+    if (selectedRole == UserRole.client && selectedType == UserType.business) {
+      context.push(BusinessLoginScreen.routeName);
+    } else {
+      // Otherwise go to regular LoginScreen
+      context.push(LoginScreen.routeName);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+
+  Widget build(BuildContext context, WidgetRef ref) {
     // main colors (approx same as UI)
     const Color kTitleGreen = Color(0xFF064E3B);
     const Color kHighlight = Color(0xFFE4FF5A);
     const Color kBodyText = Color(0xFF4B5563);
     const Color kPrimaryDark = Color(0xFF03051A);
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -47,6 +70,7 @@ class Gennotifications extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 32.h),
+
                 /// title with highlight
                 Center(
                   child: Column(
@@ -63,22 +87,40 @@ class Gennotifications extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 4.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE4FF5A),
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                        child: Text(
-                          "it's payday.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 40.sp,
-                            fontFamily: 'sf_Pro',
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF064E3B),
+                      Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          // Background image - organic shape
+                          Image.asset(
+                            'assets/images/Unerline.png',
+                            fit: BoxFit.contain,
+                            width: double.infinity,
                           ),
-                        ),
+                          // Text on top of image - centered
+                          Positioned.fill(
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w,
+                                  vertical: 12.h,
+                                ),
+                                child: Text(
+                                  "it's payday.",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 40.sp,
+                                    fontFamily: 'sf_Pro',
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF064E3B),
+                                    letterSpacing: -0.5,
+                                    height: 1.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -90,8 +132,8 @@ class Gennotifications extends StatelessWidget {
                 Center(
                   child: Text(
                     "Enable notifications and we’ll let\n"
-                        "you know the moment your\n"
-                        "payout is ready.",
+                    "you know the moment your\n"
+                    "payout is ready.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -106,12 +148,13 @@ class Gennotifications extends StatelessWidget {
                 SizedBox(height: 32.h),
 
                 /// Enable notifications button
+
                 SizedBox(
                   width: double.infinity,
                   height: 56.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.push(LoginScreen.routeName);
+                      _navigateToLogin(context, ref);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF03051A),
@@ -128,13 +171,26 @@ class Gennotifications extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                SizedBox(height: 180.h),
+
+                CustomNextButton(
+                  enabled: true,
+                  onPressed: () {
+                    context.push(LoginScreen.routeName);
+                  },
+                  text: 'Enable notifications',
+                  showArrow: false,
+                  fontWeight: FontWeight.w400,
+
                 ),
                 SizedBox(height: 16.h),
+
                 /// Skip
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      context.push(LoginScreen.routeName);
+                      _navigateToLogin(context, ref);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
