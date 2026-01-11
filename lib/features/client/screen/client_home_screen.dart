@@ -550,192 +550,200 @@ class _ActiveJobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Card Container
-        Container(
-          width: 382.w,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: const Color(0xFFE6E7EB)),
-          ),
-          padding: EdgeInsets.all(12.w),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Square Thumbnail on Left
-              Container(
-                width: 80.w,
-                height: 80.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF6F6F6),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: const Color(0xFFE6E7EB)),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: job.imageUrl.isNotEmpty
-                      ? Image.asset(
-                          job.imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: const Color(0xFFF6F6F6),
-                              child: const Icon(Icons.image_not_supported),
-                            );
-                          },
-                        )
-                      : Image.asset(
-                          'assets/images/MainLogo.png',
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              // Content Area
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Title and Salary Row
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                job.title,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                job.category,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: const Color(0xFF747474),
-                                ),
-                              ),
-                            ],
+    return Container(
+     
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: const Color(0xFFE6E7EB)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Card Container
+          Container(
+            width: 382.w,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(color: const Color(0xFFE6E7EB)),
+            ),
+            padding: EdgeInsets.all(12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Square Thumbnail on Left
+                Container(
+                  width: 80.w,
+                  height: 80.w,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF6F6F6),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(color: const Color(0xFFE6E7EB)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: job.imageUrl.isNotEmpty
+                        ? Image.asset(
+                            job.imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: const Color(0xFFF6F6F6),
+                                child: const Icon(Icons.image_not_supported),
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            'assets/images/MainLogo.png',
+                            fit: BoxFit.cover,
                           ),
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          job.price,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12.h),
-                    // Pills Row
-                    Wrap(
-                      spacing: 6.w,
-                      runSpacing: 6.h,
-                      children: [
-                        _LocationChip(text: job.location),
-                        _SimpleChip(text: job.type),
-                        _SimpleChip(text: 'Open'),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(width: 12.w),
+                // Content Area
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Title and Salary Row
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  job.title,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  job.category,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xFF747474),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            job.price,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
+                      // Pills Row
+                      Wrap(
+                        spacing: 6.w,
+                        runSpacing: 6.h,
+                        children: [
+                          _LocationChip(text: job.location),
+                          _SimpleChip(text: job.type),
+                          _SimpleChip(text: 'Open'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        // Metadata Row (Outside Card)
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Time Posted
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.watch_later_outlined,
-                    size: 16.sp,
-                    color: const Color(0xFF6D6E6F),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    job.timeAgo,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF6D6E6F),
-                    ),
-                  ),
-                ],
-              ),
-              // Number of Offers
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.person_outline,
-                    size: 16.sp,
-                    color: const Color(0xFF6D6E6F),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    job.offers ?? '05 Offers',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF6D6E6F),
-                    ),
-                  ),
-                ],
-              ),
-              // Status with Orange Dot
-              if (job.status != null)
+          SizedBox(height: 12.h),
+          // Metadata Row (Outside Card)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Time Posted
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 6.w,
-                      height: 6.w,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFF6B00),
-                        shape: BoxShape.circle,
-                      ),
+                    Icon(
+                      Icons.watch_later_outlined,
+                      size: 16.sp,
+                      color: const Color(0xFF6D6E6F),
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      job.status!,
+                      job.timeAgo,
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFFFF6B00),
+                        color: const Color(0xFF6D6E6F),
                       ),
                     ),
                   ],
                 ),
-            ],
+                // Number of Offers
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.person_outline,
+                      size: 16.sp,
+                      color: const Color(0xFF6D6E6F),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      job.offers ?? '05 Offers',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF6D6E6F),
+                      ),
+                    ),
+                  ],
+                ),
+                // Status with Orange Dot
+                if (job.status != null)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6.w,
+                        height: 6.w,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFFF6B00),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        job.status!,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xFFFF6B00),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
