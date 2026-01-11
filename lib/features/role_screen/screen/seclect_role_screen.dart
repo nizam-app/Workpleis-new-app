@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/features/role_screen/screen/seclect_type_screen.dart';
 
 enum UserRole { client, provider }
 
-class SeclectRoleScreen extends StatefulWidget {
+// Provider to store selected role
+final selectedRoleProvider = StateProvider<UserRole?>((ref) => null);
+
+class SeclectRoleScreen extends ConsumerStatefulWidget {
   const SeclectRoleScreen({super.key});
 
   static const String routeName = '/role_selection';
 
   @override
-  State<SeclectRoleScreen> createState() => _SeclectRoleScreenState();
+  ConsumerState<SeclectRoleScreen> createState() => _SeclectRoleScreenState();
 }
 
-class _SeclectRoleScreenState extends State<SeclectRoleScreen> {
+class _SeclectRoleScreenState extends ConsumerState<SeclectRoleScreen> {
   UserRole? _selected;
 
   @override
@@ -91,7 +95,10 @@ class _SeclectRoleScreenState extends State<SeclectRoleScreen> {
                         label: "I'm a Client",
                         selected: _selected == UserRole.client,
                         onTap: () {
-                          setState(() => _selected = UserRole.client);
+                          setState(() {
+                            _selected = UserRole.client;
+                            ref.read(selectedRoleProvider.notifier).state = UserRole.client;
+                          });
                         },
                       ),
 
@@ -101,7 +108,10 @@ class _SeclectRoleScreenState extends State<SeclectRoleScreen> {
                         label: "I'm Service Provider",
                         selected: _selected == UserRole.provider,
                         onTap: () {
-                          setState(() => _selected = UserRole.provider);
+                          setState(() {
+                            _selected = UserRole.provider;
+                            ref.read(selectedRoleProvider.notifier).state = UserRole.provider;
+                          });
                         },
                       ),
 

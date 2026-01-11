@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../auth/screens/login_screen.dart';
+import '../../auth/screens/business_login_screen.dart';
+import '../screen/seclect_role_screen.dart';
+import '../screen/seclect_type_screen.dart';
 
-class Gennotifications extends StatelessWidget {
+class Gennotifications extends ConsumerWidget {
   const Gennotifications({super.key});
 
   static const String routeName = '/notification';
 
+  void _navigateToLogin(BuildContext context, WidgetRef ref) {
+    final selectedRole = ref.read(selectedRoleProvider);
+    final selectedType = ref.read(selectedTypeProvider);
+    
+    // If user selected "I'm a Client" + "For Business", go to BusinessLoginScreen
+    if (selectedRole == UserRole.client && selectedType == UserType.business) {
+      context.push(BusinessLoginScreen.routeName);
+    } else {
+      // Otherwise go to regular LoginScreen
+      context.push(LoginScreen.routeName);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // main colors (approx same as UI)
     const Color kTitleGreen = Color(0xFF064E3B);
     const Color kHighlight = Color(0xFFE4FF5A);
@@ -111,7 +128,7 @@ class Gennotifications extends StatelessWidget {
                   height: 56.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.push(LoginScreen.routeName);
+                      _navigateToLogin(context, ref);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF03051A),
@@ -134,7 +151,7 @@ class Gennotifications extends StatelessWidget {
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      context.push(LoginScreen.routeName);
+                      _navigateToLogin(context, ref);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
