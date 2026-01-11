@@ -262,16 +262,19 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/features/role_screen/screen/genNotifications.dart';
-import 'package:workpleis/features/role_screen/widget/custom_next_button.dart';
 
-// ✅ providers
-import 'package:workpleis/features/auth/data/auth_flow_provider.dart';
+import 'package:workpleis/features/role_screen/screen/seclect_role_screen.dart';
 
-import '../../auth/data/select_your_type_provider.dart';
+enum UserType { individual, business }
+
+// Provider to store selected type
+final selectedTypeProvider = StateProvider<UserType?>((ref) => null);
+
 
 class SeclectTypeScreen extends ConsumerStatefulWidget {
   const SeclectTypeScreen({super.key});
@@ -283,7 +286,10 @@ class SeclectTypeScreen extends ConsumerStatefulWidget {
 }
 
 class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
-  UserRole? _selected;
+
+  UserType? _selected;
+
+
 
   void _selectRole(UserRole role) {
     setState(() => _selected = role);
@@ -370,16 +376,30 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
 
                 _RoleCard(
                   label: "For Individual",
-                  selected: _selected == UserRole.client,
-                  onTap: () => _selectRole(UserRole.client),
+
+                  selected: _selected == UserType.individual,
+                  onTap: () {
+                    setState(() {
+                      _selected = UserType.individual;
+                      ref.read(selectedTypeProvider.notifier).state = UserType.individual;
+                    });
+                  },
+
                 ),
                 SizedBox(height: 16.h),
 
 
                 _RoleCard(
                   label: "For Business",
-                  selected: _selected == UserRole.provider,
-                  onTap: () => _selectRole(UserRole.provider),
+
+                  selected: _selected == UserType.business,
+                  onTap: () {
+                    setState(() {
+                      _selected = UserType.business;
+                      ref.read(selectedTypeProvider.notifier).state = UserType.business;
+                    });
+                  },
+
                 ),
 
                 SizedBox(height: 32.h),
