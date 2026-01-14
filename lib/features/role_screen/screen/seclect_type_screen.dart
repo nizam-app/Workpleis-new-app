@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/features/role_screen/screen/genNotifications.dart';
-import 'package:workpleis/features/role_screen/screen/seclect_role_screen.dart';
+import 'package:workpleis/features/auth/data/auth_flow_provider.dart';
+import 'package:workpleis/core/constants/color_control/all_color.dart';
 
 enum UserType { individual, business }
 
@@ -22,6 +23,24 @@ class SeclectTypeScreen extends ConsumerStatefulWidget {
 class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
   UserType? _selected;
 
+  void _goNext() {
+    if (_selected == null) return;
+
+    // ✅ OTP flow set (so OTP screen knows it's not forgot password)
+    ref.read(otpEntryFlowProvider.notifier).state =
+        OtpEntryFlow.phoneVerification;
+
+    context.push(Gennotifications.routeName);
+  }
+
+  void _skip() {
+    // Navigate without selecting a type
+    ref.read(otpEntryFlowProvider.notifier).state =
+        OtpEntryFlow.phoneVerification;
+
+    context.push(Gennotifications.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +53,6 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// top logo
                 Padding(
                   padding: EdgeInsets.only(top: 8.h),
                   child: Image.asset(
@@ -43,10 +61,8 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     fit: BoxFit.contain,
                   ),
                 ),
-
                 SizedBox(height: 32.h),
 
-                /// center icon
                 Center(
                   child: Image.asset(
                     'assets/images/typeicon.png',
@@ -54,10 +70,8 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     fit: BoxFit.contain,
                   ),
                 ),
-
                 SizedBox(height: 28.h),
 
-                /// title
                 Center(
                   child: Text(
                     'Select your Type',
@@ -70,13 +84,11 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 8.h),
 
-                /// subtitle
                 Center(
                   child: Text(
-                    'A  Sustainable Marketplace For\nBusinesses',
+                    'A Sustainable Marketplace For\nBusinesses',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -87,28 +99,31 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 32.h),
 
-                /// type cards
                 _RoleCard(
                   label: "For Individual",
+
                   selected: _selected == UserType.individual,
                   onTap: () {
                     setState(() {
                       _selected = UserType.individual;
-                      ref.read(selectedTypeProvider.notifier).state = UserType.individual;
+                      ref.read(selectedTypeProvider.notifier).state =
+                          UserType.individual;
                     });
                   },
                 ),
                 SizedBox(height: 16.h),
+
                 _RoleCard(
                   label: "For Business",
+
                   selected: _selected == UserType.business,
                   onTap: () {
                     setState(() {
                       _selected = UserType.business;
-                      ref.read(selectedTypeProvider.notifier).state = UserType.business;
+                      ref.read(selectedTypeProvider.notifier).state =
+                          UserType.business;
                     });
                   },
                 ),
@@ -120,15 +135,11 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                   width: double.infinity,
                   height: 56.h,
                   child: ElevatedButton(
-                    onPressed: _selected == null
-                        ? null
-                        : () {
-                      context.push(Gennotifications.routeName);
-                    },
+                    onPressed: _selected == null ? null : _goNext,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF03051A),
                       disabledBackgroundColor:
-                      const Color(0xFF03051A).withOpacity(0.25),
+                          const Color(0xFF03051A).withOpacity(0.25),
                       shape: const StadiumBorder(),
                       elevation: 0,
                     ),
@@ -154,15 +165,11 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 16.h),
 
-                /// Skip
                 Center(
                   child: TextButton(
-                    onPressed: () {
-                      context.push(Gennotifications.routeName);
-                    },
+                    onPressed: _skip,
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
                       padding: EdgeInsets.zero,
@@ -179,21 +186,17 @@ class _SeclectTypeScreenState extends ConsumerState<SeclectTypeScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 8.h),
               ],
             ),
           ),
         ),
       ),
-
     );
   }
 }
 
-/// ---------------------------------------------------------------------------
-///  ROLE CARD
-/// ---------------------------------------------------------------------------
+/// ROLE CARD
 class _RoleCard extends StatelessWidget {
   const _RoleCard({
     required this.label,
@@ -207,8 +210,9 @@ class _RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-    selected ? Colors.black : Colors.black.withOpacity(0.18);
+    final borderColor = selected
+        ? Colors.black
+        : Colors.black.withOpacity(0.18);
 
     return GestureDetector(
       onTap: onTap,
@@ -232,7 +236,6 @@ class _RoleCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            /// label
             Text(
               label,
               style: TextStyle(
@@ -242,8 +245,6 @@ class _RoleCard extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-
-            /// circular check
             Container(
               height: 22.r,
               width: 22.r,
@@ -258,11 +259,7 @@ class _RoleCard extends StatelessWidget {
                 color: selected ? Colors.black : Colors.white,
               ),
               child: selected
-                  ? Icon(
-                Icons.check,
-                size: 14.sp,
-                color: Colors.white,
-              )
+                  ? Icon(Icons.check, size: 14.sp, color: Colors.white)
                   : null,
             ),
           ],
