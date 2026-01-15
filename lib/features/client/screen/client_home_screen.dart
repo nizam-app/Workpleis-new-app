@@ -16,6 +16,8 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final gap = 12.w;
+    final bubble = 30.w;
     return Scaffold(
       backgroundColor: HomeColor.backgroundWhite,
       extendBody: true,
@@ -98,134 +100,173 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               ),
               _Section(
                 title: 'Your Active Jobs',
-                child: SizedBox(
-                  // Trim height so the cards hug their content and avoid excess
-                  // empty space beneath each item.
-                  height: 222.h,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) =>
-                        _ActiveJobCard(job: activeJobs[index]),
-                    separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                    itemCount: activeJobs.length,
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      // Trim height so the cards hug their content and avoid excess
+                      // empty space beneath each item.
+                      height: 222.h,
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) =>
+                            _ActiveJobCard(job: activeJobs[index]),
+                        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                        itemCount: activeJobs.length,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // ✅ Progress line under steps (like image 1)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: _StepsProgressBar(activeWidth: 120.w),
+                    ),
+                    SizedBox(height: 15.h),
+                    Divider(color: AllColor.grey300, height: 20.h),
+                  ],
                 ),
               ),
 
-              
               _Section(
                 title: 'Inspirated by UI/UX trends',
-                child: SizedBox(
-                  height: 255.h,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) =>
-                        _TrendingJobCard(job: trendingJobs[index]),
-                    separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                    itemCount: trendingJobs.length,
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 255.h,
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) =>
+                            _TrendingJobCard(job: trendingJobs[index]),
+                        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                        itemCount: trendingJobs.length,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // ✅ Progress line under steps (like image 1)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: _StepsProgressBar(activeWidth: 120.w),
+                    ),
+                    SizedBox(height: 15.h),
+                    Divider(color: AllColor.grey300, height: 20.h),
+                  ],
                 ),
               ),
               _Section(
                 title: 'Top Service Providers',
-                child: SizedBox(
-                  height: 357.h,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) =>
-                        _ProviderCard(provider: serviceProviders[index]),
-                    separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                    itemCount: serviceProviders.length,
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 280.h,
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) =>
+                            _ProviderCard(provider: serviceProviders[index]),
+                        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                        itemCount: serviceProviders.length,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // ✅ Progress line under steps (like image 1)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: _StepsProgressBar(activeWidth: 120.w),
+                    ),
+                    SizedBox(height: 15.h),
+                    Divider(color: AllColor.grey300, height: 20.h),
+                  ],
                 ),
               ),
               _Section(
                 title: 'Recently Viewed',
-                child: SizedBox(
-                  height: 326.h,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) =>
-                        _RecentlyViewedCard(job: recentlyViewed[index]),
-                    separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                    itemCount: recentlyViewed.length,
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 258.h, // ✅ image-1 style card height fit
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        scrollDirection: Axis.horizontal, // ✅ fix
+                        itemBuilder: (context, index) =>
+                            _RecentlyViewedCard(job: recentlyViewed[index]),
+                        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                        itemCount: recentlyViewed.length,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // ✅ Progress line under steps (like image 1)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: _StepsProgressBar(activeWidth: 120.w),
+                    ),
+                    SizedBox(height: 15.h),
+                    Divider(color: AllColor.grey300, height: 20.h),
+                  ],
                 ),
               ),
+
               _Section(
                 title: 'How it works',
                 showSeeAll: false,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: EdgeInsets.only(top: 17.h),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: double.infinity,
-                        height: 180.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFBFD4B2), Color(0xFF010201)],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                'How it works',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                width: 56.w,
-                                height: 56.w,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFCAFF45),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.black,
-                                  size: 28.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 20.h),
+                      // ✅ Steps row FIRST (small height)
                       SizedBox(
-                        height: 200.h,
+                        height: 92.h,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) =>
-                              _StepChip(step: steps[index]),
-                          separatorBuilder: (_, __) => SizedBox(width: 8.w),
+                          clipBehavior: Clip.none, // ✅ bubble overlap allow
+                          padding: EdgeInsets.only(
+                            left: 24.w,
+                            right: 24.w + bubble / 2, // ✅ last bubble কাটবে না
+                          ),
+                          itemBuilder: (context, index) => _StepChip(
+                            step: steps[index],
+                            index: index,
+                            total: steps.length,
+                            gap: gap,
+                            bubbleSize: bubble,
+                          ),
+                          separatorBuilder: (_, __) => SizedBox(width: gap),
                           itemCount: steps.length,
                         ),
                       ),
+
+                      SizedBox(height: 20.h),
+
+                      // ✅ Progress line under steps (like image 1)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: _StepsProgressBar(activeWidth: 120.w),
+                      ),
+
+                      SizedBox(height: 20.h),
+
+                      // ✅ Video card after steps
+                      Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: _HowItWorksVideoCard(),
+                      ),
+
+                      SizedBox(height: 80.h),
                     ],
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 120.h)),
             ],
           ),
         ),
       ),
 
-      bottomNavigationBar: _BottomNav(),
+      // bottomNavigationBar: _BottomNav(),
     );
   }
 }
@@ -443,7 +484,7 @@ class _Section extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 20.h),
+        padding: EdgeInsets.only(top: 1.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -963,7 +1004,7 @@ class _TrendingJobCard extends StatelessWidget {
                 child: Text(
                   job.timeAgo,
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF6D6E6F),
                   ),
@@ -985,79 +1026,168 @@ class _ProviderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final coverUrl = provider.coverImageUrl?.trim();
+    final hasNetworkCover =
+        coverUrl != null &&
+        coverUrl.isNotEmpty &&
+        (Uri.tryParse(coverUrl)?.hasScheme ?? false);
+    const fallbackCoverAsset = 'assets/images/home/image.png';
+
     return Container(
       width: 224.w,
-      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: const Color(0xFFD5D5D5)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            constraints: BoxConstraints(maxHeight: 110.h),
-            height: 110.h,
-            decoration: BoxDecoration(
-              color: const Color(0xFFBFAAFF),
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: const Center(
-              child: Icon(Icons.person, size: 50, color: Colors.white),
-            ),
-          ),
-          SizedBox(height: 10.h),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircleAvatar(
-                radius: 13,
-                backgroundColor: Colors.black12,
-                child: Icon(Icons.person, size: 16),
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  provider.name,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 4.h),
-          Text(
-            provider.category,
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF747474)),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(height: 4.h),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.star, size: 20.sp, color: Colors.black),
-              SizedBox(width: 4.w),
-              Flexible(
-                child: Text(
-                  '${provider.rating} (${provider.reviewCount})',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: const Color(0xFF747474),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ],
+        borderRadius: BorderRadius.circular(22.r),
+        border: Border.all(color: const Color(0xFFE2E2E2), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
           ),
         ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(12.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top banner image (like Image 1)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(18.r),
+              child: SizedBox(
+                height: 144.h,
+                width: double.infinity,
+                child: hasNetworkCover
+                    ? Image.network(
+                        coverUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Image.asset(
+                          fallbackCoverAsset,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            color: const Color(0xFFEFF0F2),
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.image_not_supported_outlined,
+                              color: Color(0xFF9E9E9E),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Image.asset(
+                        (coverUrl != null && coverUrl.isNotEmpty)
+                            ? coverUrl
+                            : fallbackCoverAsset,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: const Color(0xFFEFF0F2),
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.image_not_supported_outlined,
+                            color: Color(0xFF9E9E9E),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+
+            SizedBox(height: 14.h),
+
+            // Avatar + Name row
+            Row(
+              children: [
+                Container(
+                  width: 34.w,
+                  height: 34.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFE6E6E6),
+                      width: 1,
+                    ),
+                  ),
+                  child: ClipOval(
+                    child:
+                        provider.avatarUrl != null &&
+                            provider.avatarUrl!.isNotEmpty
+                        ? Image.network(
+                            provider.avatarUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              'assets/images/profile.png',
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/profile.png',
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Text(
+                    provider.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF111111),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 6.h),
+
+            // Category (grey)
+            Text(
+              provider.category,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: const Color(0xFF8A8A8A),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            SizedBox(height: 10.h),
+
+            // Rating row: star + "4.8 (150)" where (150) is grey
+            Row(
+              children: [
+                Icon(Icons.star_rounded, size: 22.sp, color: Colors.black),
+                SizedBox(width: 6.w),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: provider.rating.toStringAsFixed(1),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF111111),
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' (${provider.reviewCount})',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF9A9A9A),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1068,147 +1198,313 @@ class _RecentlyViewedCard extends StatelessWidget {
 
   const _RecentlyViewedCard({required this.job});
 
+  // --- Design tokens (image-1 style) ---
+  static const borderColor = Color(0xFFE6E7EB);
+  static const innerBg = Color(0xFFF7F7F7);
+  static const textPrimary = Color(0xFF111111);
+  static const textSecondary = Color(0xFF7A7A7A);
+  static const textMuted = Color(0xFF6D6E6F);
+  static const thumbBg = Color(0xFFCFFFD6); // ✅ mint green like screenshot
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 316.w,
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: const Color(0xFFE6E7EB)),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: borderColor),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Container(
-                height: 174.h,
-                margin: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF6F6F6),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: const Color(0xFFE6E7EB)),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: job.imageUrl.isNotEmpty
-                      ? Image.asset(
-                          job.imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: const Color(0xFFF6F6F6),
-                              child: const Icon(Icons.image_not_supported),
-                            );
-                          },
-                        )
-                      : Image.asset(
-                          'assets/images/MainLogo.png',
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-              Positioned(
-                top: 16.h,
-                right: 16.w,
-                child: Icon(
-                  Icons.bookmark_border,
-                  color: Colors.black,
-                  size: 24.sp,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          // ✅ Inner light-gray card
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: innerBg,
+              borderRadius: BorderRadius.circular(18.r),
+              border: Border.all(color: borderColor),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Top row
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _Thumb(imageUrl: job.imageUrl),
+                    SizedBox(width: 12.w),
+
+                    // Title + Category
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             job.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w800,
+                              color: textPrimary,
+                              height: 1.15,
                             ),
                           ),
-                          SizedBox(height: 4.h),
+                          SizedBox(height: 6.h),
                           Text(
                             job.category,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xFF747474),
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                              color: textSecondary,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Text(
-                      job.price,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
+
+                    SizedBox(width: 12.w),
+
+                    // Bookmark + Price (right)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.bookmark_border_rounded,
+                          size: 22.sp,
+                          color: textPrimary,
+                        ),
+                        SizedBox(height: 10.h),
+                        SizedBox(
+                          width: 60.w, // ✅ to wrap like "$4,\n000"
+                          child: Text(
+                            job.price,
+                            textAlign: TextAlign.right,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w800,
+                              color: textPrimary,
+                              height: 1.05,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                SizedBox(height: 8.h),
+
+                SizedBox(height: 12.h),
+
+                // Rating row
                 Row(
                   children: [
-                    Icon(Icons.star, size: 20.sp, color: Colors.black),
-                    SizedBox(width: 4.w),
+                    Icon(Icons.star_rounded, size: 22.sp, color: Colors.black),
+                    SizedBox(width: 8.w),
                     Text(
-                      '${job.rating}',
+                      job.rating.toString(),
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: textPrimary,
                       ),
                     ),
-                    SizedBox(width: 4.w),
+                    SizedBox(width: 8.w),
                     Text(
                       '(${job.reviewCount})',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF747474),
-                        decoration: TextDecoration.underline,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: textSecondary,
+                        decoration:
+                            TextDecoration.underline, // ✅ like screenshot
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 12.h),
-                Row(
+
+                SizedBox(height: 14.h),
+
+                // Chips row (pill)
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 6.w,
+                  runSpacing: 6.h,
                   children: [
-                    _Chip(text: job.location, icon: Icons.flag),
-                    SizedBox(width: 8.w),
-                    _Chip(text: job.type, icon: Icons.work_outline),
-                    const Spacer(),
-                    Icon(
-                      Icons.access_time,
-                      size: 20.sp,
-                      color: const Color(0xFF6D6E6F),
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      job.timeAgo,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF6D6E6F),
-                      ),
-                    ),
+                    _LocationChip(text: job.location),
+                    _SimpleChip(text: job.type),
+                    // _SimpleChip(text: 'Open'),
                   ],
                 ),
               ],
+            ),
+          ),
+
+          SizedBox(height: 14.h),
+
+          // Bottom time row (outside inner card)
+          Row(
+            children: [
+              Container(
+                width: 24.w,
+                height: 24.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: borderColor),
+                ),
+                child: Icon(
+                  Icons.access_time_rounded,
+                  size: 16.sp,
+                  color: textMuted,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                job.timeAgo,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  color: textMuted,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Thumb extends StatelessWidget {
+  final String imageUrl;
+  const _Thumb({required this.imageUrl});
+
+  static const borderColor = Color(0xFFE6E7EB);
+  static const thumbBg = Color(0xFFCFFFD6);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 74.w,
+      height: 74.w,
+      decoration: BoxDecoration(
+        color: thumbBg, // ✅ mint green
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: imageUrl.isNotEmpty
+            ? Image.asset(imageUrl, fit: BoxFit.cover)
+            : const Center(child: Icon(Icons.image, color: Colors.white)),
+      ),
+    );
+  }
+}
+
+class _TextChip extends StatelessWidget {
+  final String text;
+  const _TextChip({required this.text});
+
+  static const borderColor = Color(0xFFE6E7EB);
+  static const textPrimary = Color(0xFF111111);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(999.r),
+        border: Border.all(color: borderColor),
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+          color: textPrimary,
+        ),
+      ),
+    );
+  }
+}
+
+class _CountryChip extends StatelessWidget {
+  final String text;
+  const _CountryChip({required this.text});
+
+  static const borderColor = Color(0xFFE6E7EB);
+  static const textPrimary = Color(0xFF111111);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(999.r),
+        border: Border.all(color: borderColor),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // ✅ Flag circle placeholder (replace with real flag asset if you have)
+          Container(
+            width: 18.w,
+            height: 18.w,
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+            child: const Center(
+              child: Text("🇨🇦"), // if you have asset, replace it
+            ),
+          ),
+          SizedBox(width: 10.w),
+          Text(
+            text,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ChipPill extends StatelessWidget {
+  final String text;
+  final IconData icon;
+
+  const _ChipPill({required this.text, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(999.r),
+        border: Border.all(color: const Color(0xFFE6E7EB)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16.sp, color: const Color(0xFF111111)),
+          SizedBox(width: 8.w),
+          Text(
+            text,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF111111),
             ),
           ),
         ],
@@ -1219,62 +1515,106 @@ class _RecentlyViewedCard extends StatelessWidget {
 
 class _StepChip extends StatelessWidget {
   final StepItem step;
+  final int index;
+  final int total;
+  final double gap;
+  final double bubbleSize;
 
-  const _StepChip({required this.step});
+  const _StepChip({
+    required this.step,
+    required this.index,
+    required this.total,
+    required this.gap,
+    required this.bubbleSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isFirst = index == 0;
+    final isLast = index == total - 1;
+
+    return SizedBox(
+      width: 150.w,
+      height: 92.h,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Card
+          Container(
+            width: 150.w,
+            height: 92.h,
+            padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 12.h),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3F3F3),
+              borderRadius: BorderRadius.circular(18.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(step.icon, size: 26.sp, color: Colors.black),
+                SizedBox(height: 12.h),
+                Expanded(
+                  child: Text(
+                    step.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w700,
+                      height: 1.15,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // ✅ Bubble BETWEEN cards (attach to current card, on LEFT)
+          // index==1 bubble 1 (between card0 & card1)
+          // index==2 bubble 2 (between card1 & card2)
+          if (!isFirst)
+            Positioned(
+              left: -((gap / 2) + (bubbleSize / 2)), // ✅ exact middle of gap
+              top: 30.h,
+              child: _Bubble(step.number, bubbleSize),
+            ),
+
+          // ✅ Last bubble on RIGHT edge (like your image: "3" at end)
+          if (isLast)
+            Positioned(
+              right: -(bubbleSize / 2),
+              top: 30.h,
+              child: _Bubble(step.number, bubbleSize),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Bubble extends StatelessWidget {
+  final String text;
+  final double size;
+  const _Bubble(this.text, this.size);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120.w,
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF6F6F6),
-        borderRadius: BorderRadius.circular(12.r),
+      width: size,
+      height: size,
+      decoration: const BoxDecoration(
+        color: Color(0xFFCAFF45),
+        shape: BoxShape.circle,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 100.w,
-            height: 100.w,
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(step.icon, size: 24.sp, color: Colors.black),
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            step.title,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            width: 24.w,
-            height: 24.w,
-            decoration: const BoxDecoration(
-              color: Color(0xFFCAFF45),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Text(
-                step.number,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ],
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w800,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -1478,44 +1818,44 @@ class _StatusChip extends StatelessWidget {
   }
 }
 
-class _BottomNav extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 95.h,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFD6D6D6))),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              _NavItem(icon: Icons.home, label: 'Home', active: true),
-              _NavItem(icon: Icons.work_outline, label: 'Jobs'),
-              SizedBox(width: 60),
-              _NavItem(icon: Icons.mail_outline, label: 'Message'),
-              _NavItem(icon: Icons.person_outline, label: 'Profile'),
-            ],
-          ),
-          Positioned(
-            bottom: 6.h,
-            child: Container(
-              width: 134.w,
-              height: 5.h,
-              decoration: BoxDecoration(
-                color: const Color(0xFF8B8B8B).withOpacity(0.5),
-                borderRadius: BorderRadius.circular(100),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class _BottomNav extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 70.h,
+//       decoration: const BoxDecoration(
+//         color: Colors.white,
+//         border: Border(top: BorderSide(color: Color(0xFFD6D6D6))),
+//       ),
+//       child: Stack(
+//         alignment: Alignment.center,
+//         children: [
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//             children: const [
+//               _NavItem(icon: Icons.home, label: 'Home', active: true),
+//               _NavItem(icon: Icons.work_outline, label: 'Jobs'),
+//               SizedBox(width: 60),
+//               _NavItem(icon: Icons.mail_outline, label: 'Message'),
+//               _NavItem(icon: Icons.person_outline, label: 'Profile'),
+//             ],
+//           ),
+//           Positioned(
+//             bottom: 6.h,
+//             child: Container(
+//               width: 134.w,
+//               height: 5.h,
+//               decoration: BoxDecoration(
+//                 color: const Color(0xFF8B8B8B).withOpacity(0.5),
+//                 borderRadius: BorderRadius.circular(100),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _NavItem extends StatelessWidget {
   final IconData icon;
@@ -1731,7 +2071,7 @@ final List<JobItem> recentlyViewed = [
     title: 'Social media graphics',
     category: 'UI/UX Design',
     price: '\$3,200',
-    location: 'United Kingdom',
+    location: 'United States',
     type: 'Part-time',
     rating: 4.6,
     reviewCount: 176,
@@ -1776,7 +2116,7 @@ final List<JobItem> recentlyViewed = [
 final List<StepItem> steps = [
   StepItem(number: '1', title: 'Post a job', icon: Icons.work_outline),
   StepItem(number: '2', title: 'Get Offers', icon: Icons.people_outline),
-  StepItem(number: '3', title: 'Choose a workpeer', icon: Icons.people_outline),
+  StepItem(number: '3', title: 'Choose ', icon: Icons.people_outline),
   StepItem(number: '4', title: 'Make Payment', icon: Icons.account_balance),
   StepItem(number: '5', title: 'Review Job', icon: Icons.star_border),
   StepItem(number: '6', title: 'Accept Job', icon: Icons.check_circle_outline),
@@ -1835,11 +2175,16 @@ class ProviderItem {
   final double rating;
   final int reviewCount;
 
+  final String? coverImageUrl; // top banner image
+  final String? avatarUrl; // small circle avatar
+
   ProviderItem({
     required this.name,
     required this.category,
     required this.rating,
     required this.reviewCount,
+    this.coverImageUrl,
+    this.avatarUrl,
   });
 }
 
@@ -1849,4 +2194,76 @@ class StepItem {
   final IconData icon;
 
   StepItem({required this.number, required this.title, required this.icon});
+}
+
+class _StepsProgressBar extends StatelessWidget {
+  final double activeWidth; // left filled segment
+  const _StepsProgressBar({required this.activeWidth});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 8.h,
+      decoration: BoxDecoration(
+        color: const Color(0xFFEDEDED),
+        borderRadius: BorderRadius.circular(99.r),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          width: activeWidth,
+          height: 8.h,
+          decoration: BoxDecoration(
+            color: const Color(0xFFCDD0C9),
+            borderRadius: BorderRadius.circular(99.r),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HowItWorksVideoCard extends StatelessWidget {
+  const _HowItWorksVideoCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 170.h,
+      decoration: BoxDecoration(
+        color: const Color(0xFF6F7764), // ✅ olive/grey like image 1
+        borderRadius: BorderRadius.circular(18.r),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 72.w,
+              height: 72.w,
+              decoration: BoxDecoration(
+                color: const Color(0xFFCAFF45), // ✅ lime
+                borderRadius: BorderRadius.circular(18.r), // ✅ rounded-square
+              ),
+              child: Icon(
+                Icons.play_arrow_rounded,
+                size: 36.sp,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              'How it works',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w800,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
