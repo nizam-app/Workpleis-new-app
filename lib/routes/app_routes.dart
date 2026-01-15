@@ -24,6 +24,7 @@ import 'package:workpleis/features/auth/screens/video_selfie_ready_screen1.dart'
 // Client
 import 'package:workpleis/features/client/screen/client_home_screen.dart';
 import 'package:workpleis/features/client/Jobs/screen/jobs.dart';
+import 'package:workpleis/features/client/Jobs/screen/postJob_wizard_screen.dart';
 import 'package:workpleis/features/nav_bar/screen/bottom_nav_bar.dart';
 // Onboarding
 import 'package:workpleis/features/onboarding/screen/onboarding_screen_01.dart';
@@ -43,7 +44,7 @@ import 'error_screen.dart';
 class AppRouter {
   // initial route
   //static const String initial = ClientHomeScreen.routeName;
-  static const String initial = SplashScreen.routeName;
+  static final String initial = SplashScreen.routeName;
   static final GoRouter appRouter = GoRouter(
     initialLocation: initial,
 
@@ -81,6 +82,11 @@ class AppRouter {
         path: OnboardingScreen05.routeName,
         name: OnboardingScreen05.routeName,
         builder: (context, state) => const OnboardingScreen05(),
+      ),
+      GoRoute(
+        path: PostJobWizardScreen.routeName,
+        name: PostJobWizardScreen.routeName,
+        builder: (context, state) => const PostJobWizardScreen(),
       ),
 
       // 🔹 Auth

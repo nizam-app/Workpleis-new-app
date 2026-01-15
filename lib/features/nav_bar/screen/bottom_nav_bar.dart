@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,7 @@ import 'package:workpleis/features/client/screen/client_home_screen.dart';
 import 'package:workpleis/features/client/Jobs/screen/jobs.dart';
 import 'package:workpleis/features/client/message/screen/messages_screen.dart';
 import 'package:workpleis/features/client/profile/screen/profile_screen.dart';
+
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class BottomNavBar extends ConsumerStatefulWidget {
@@ -20,6 +23,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(selectedIndexProvider);
+    final navBarHeight = math.max(kBottomNavigationBarHeight, 72.h);
 
     return Scaffold(
       body: IndexedStack(
@@ -34,17 +38,12 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AllColor.white,
-          border: Border(
-            top: BorderSide(
-              color: AllColor.grey200,
-              width: 0.5,
-            ),
-          ),
+          border: Border(top: BorderSide(color: AllColor.grey200, width: 0.5)),
         ),
         child: SafeArea(
           child: Container(
-            height: 60.h,
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+            height: navBarHeight,
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,7 +117,7 @@ class _NavItem extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(8.r),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
             alignment: Alignment.center,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -132,6 +131,9 @@ class _NavItem extends StatelessWidget {
                 SizedBox(height: 4.h),
                 Text(
                   label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,

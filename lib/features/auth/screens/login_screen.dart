@@ -10,6 +10,7 @@ import 'package:workpleis/features/auth/logic/password_valitedor.dart';
 import 'package:workpleis/features/auth/screens/business_login_screen.dart';
 import 'package:workpleis/features/auth/screens/forget_password_screen.dart';
 import 'package:workpleis/features/auth/screens/register_screen.dart';
+import 'package:workpleis/features/nav_bar/screen/bottom_nav_bar.dart';
 
 import '../../client/screen/client_home_screen.dart';
 import '../logic/login_reverpod.dart';
@@ -307,9 +308,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 CustomButton(
                   text: isLoading ? "Please wait..." : "Login",
                   onTap: () {
-                    context.push(
-                      ClientHomeScreen.routeName,
-                    ); // if (!isLoading) {
+                    context.push(BottomNavBar.routeName); // if (!isLoading) {
                     //   _submit();
                     // }
                   },
