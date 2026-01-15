@@ -363,6 +363,7 @@ class _JobCard extends StatelessWidget {
             ),
             SizedBox(height: 4.h),
             Text(
+              
               'more...',
               style: TextStyle(
                 fontSize: 14.sp,
