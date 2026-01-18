@@ -43,6 +43,7 @@ import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 import '../features/client/message/screen/messages_screen.dart';
 import '../features/client/profile/screen/profile_screen.dart';
 import '../features/client/project/screen/project_screen.dart';
+import '../features/notifications/screen/referral_screen.dart';
 import 'error_screen.dart';
 
 class AppRouter {
@@ -75,6 +76,12 @@ class AppRouter {
         name: SplashScreen.routeName,
         builder: (context, state) => const SplashScreen(),
       ),
+      GoRoute(
+        path: ReferralScreen.routeName,
+        name: ReferralScreen.routeName,
+        builder: (context, state) =>  ReferralScreen(),
+      ),
+
 
       // 🔹 Onboarding
       GoRoute(

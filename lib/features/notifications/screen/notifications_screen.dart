@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/notifications/screen/referral_screen.dart';
 
 enum _NotificationLeadingType { avatarAsset, icon }
 
@@ -167,41 +168,44 @@ class _NotificationTile extends StatelessWidget {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _Leading(item: item),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AllColor.black,
-                      fontFamily: 'sf_pro',
-                      height: 1.25,
+        child: GestureDetector(
+          onTap: (){context.push(ReferralScreen.routeName);},
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _Leading(item: item),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AllColor.black,
+                        fontFamily: 'sf_pro',
+                        height: 1.25,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    item.date,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AllColor.grey,
-                      fontFamily: 'sf_pro',
+                    SizedBox(height: 6.h),
+                    Text(
+                      item.date,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AllColor.grey,
+                        fontFamily: 'sf_pro',
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
