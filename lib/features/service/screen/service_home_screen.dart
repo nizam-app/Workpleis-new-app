@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/color_control/all_color.dart';
+import 'get_paid_now_screen.dart';
 
 class ServiceHomeScreen extends StatelessWidget {
   const ServiceHomeScreen({super.key});
   static const String routeName = '/service_home';
-
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ServiceHomeScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: 24.h),
+            padding: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,10 +39,20 @@ class ServiceHomeScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: const _StatsCardsRow(),
                 ),
-                SizedBox(height: 26.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: const _EarningsSection(),
+                SizedBox(height: 30.h),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24.r),
+                      topRight: Radius.circular(24.r),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24.w, 22.h, 24.w, 24.h),
+                    child: const _EarningsSection(),
+                  ),
                 ),
               ],
             ),
@@ -145,8 +156,9 @@ class _StatsCardsRow extends StatelessWidget {
         Expanded(
           child: _StatCard(
             height: 130.h,
-            icon: Icons.assignment_outlined,
-            iconColor: AllColor.black,
+            width: 20.w,
+            iconAsset: 'assets/images/clipboard.png',
+            iconTintColor: AllColor.black,
             title: '282',
             subtitle: 'Total Application',
           ),
@@ -157,8 +169,8 @@ class _StatsCardsRow extends StatelessWidget {
             children: [
               _StatCard(
                 height: 60.h,
-                icon: Icons.task_alt_rounded,
-                iconColor: AllColor.black,
+                iconAsset: 'assets/images/document-validation.png',
+                iconTintColor: AllColor.black,
                 title: '20',
                 subtitle: 'Accepted Proposal',
                 titleSize: 20.sp,
@@ -166,8 +178,7 @@ class _StatsCardsRow extends StatelessWidget {
               SizedBox(height: 10.h),
               _StatCard(
                 height: 60.h,
-                icon: Icons.cancel_rounded,
-                iconColor: const Color(0xFFFF0000),
+                iconAsset: 'assets/images/document-validation (1).png',
                 title: '20',
                 subtitle: 'Rejected Proposal',
                 titleSize: 20.sp,
@@ -182,26 +193,113 @@ class _StatsCardsRow extends StatelessWidget {
 
 class _StatCard extends StatelessWidget {
   final double height;
-  final IconData icon;
-  final Color iconColor;
+  final String iconAsset;
+  final Color? iconTintColor;
   final String title;
   final String subtitle;
   final double? titleSize;
+  final double? width;
 
   const _StatCard({
     required this.height,
-    required this.icon,
-    required this.iconColor,
+    required this.iconAsset,
+    this.iconTintColor,
     required this.title,
     required this.subtitle,
     this.titleSize,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isCompact = height < 90;
+    final double cardPadding = isCompact ? 10.w : 16.w;
+    final double iconBoxSize = isCompact ? 32.w : 40.w;
+    final double iconSize = isCompact ? 18.sp : 22.sp;
+    final double resolvedTitleSize =
+        titleSize ?? (isCompact ? 18.sp : 22.sp);
+    final double subtitleFontSize = isCompact ? 10.sp : 12.sp;
+    final double titleSubtitleSpacing = isCompact ? 2.h : 4.h;
+    final int subtitleMaxLines = isCompact ? 1 : 2;
+    final double iconTextSpacing = width ?? 10.w;
+
+    final Widget iconBox = Container(
+      width: iconBoxSize,
+      height: iconBoxSize,
+      decoration: BoxDecoration(
+        color: const Color(0xFFD2FF56),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: const Color(0x1A555555)),
+      ),
+      child: Center(
+        child: Image.asset(
+          iconAsset,
+          width: iconSize,
+          height: iconSize,
+          fit: BoxFit.contain,
+          color: iconTintColor,
+          colorBlendMode: BlendMode.srcIn,
+        ),
+      ),
+    );
+
+    final Widget titleText = Text(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontFamily: 'sf_pro',
+        fontWeight: FontWeight.w700,
+        fontSize: resolvedTitleSize,
+        color: AllColor.white,
+        height: 1.0,
+      ),
+    );
+
+    final Widget subtitleText = Text(
+      subtitle,
+      maxLines: subtitleMaxLines,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontFamily: 'sf_pro',
+        fontWeight: FontWeight.w400,
+        fontSize: subtitleFontSize,
+        color: AllColor.white,
+      ),
+    );
+
+    if (isCompact) {
+      return Container(
+        height: height,
+        padding: EdgeInsets.all(cardPadding),
+        decoration: BoxDecoration(
+          color: const Color(0xFF698455),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            iconBox,
+            SizedBox(width: iconTextSpacing),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  titleText,
+                  SizedBox(height: titleSubtitleSpacing),
+                  subtitleText,
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       height: height,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         color: const Color(0xFF698455),
         borderRadius: BorderRadius.circular(12.r),
@@ -210,16 +308,7 @@ class _StatCard extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Container(
-              width: 40.w,
-              height: 40.w,
-              decoration: BoxDecoration(
-                color: const Color(0xFFD2FF56),
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: const Color(0x1A555555)),
-              ),
-              child: Icon(icon, size: 22.sp, color: iconColor),
-            ),
+            child: iconBox,
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -229,29 +318,10 @@ class _StatCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height >= 90 ? 26.h : 0),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'sf_pro',
-                      fontWeight: FontWeight.w700,
-                      fontSize: titleSize ?? 22.sp,
-                      color: AllColor.white,
-                      height: 1.0,
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    subtitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'sf_pro',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                      color: AllColor.white,
-                    ),
-                  ),
+                  SizedBox(height: 26.h + 10.h),
+                  titleText,
+                  SizedBox(height: titleSubtitleSpacing),
+                  subtitleText,
                 ],
               ),
             ),
@@ -320,22 +390,26 @@ class _EarningsSection extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 30.h),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 24.w,
-                        vertical: 10.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF02021D),
+                    Material(
+                      color: const Color(0xFF02021D),
+                      borderRadius: BorderRadius.circular(99.r),
+                      child: InkWell(
+                        onTap: () => context.push(GetPaidNowScreen.routeName),
                         borderRadius: BorderRadius.circular(99.r),
-                      ),
-                      child: Text(
-                        'Withdraw earning',
-                        style: TextStyle(
-                          fontFamily: 'sf_pro',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: AllColor.white,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 10.h,
+                          ),
+                          child: Text(
+                            'Withdraw earning',
+                            style: TextStyle(
+                              fontFamily: 'sf_pro',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              color: AllColor.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -448,7 +522,7 @@ class _ProposalRow extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 14.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(color: const Color(0xFFEBEBEB)),
