@@ -62,7 +62,7 @@ import 'error_screen.dart';
 class AppRouter {
   // initial route
   //static const String initial = ClientHomeScreen.routeName;
-  static final String initial = ServiceBottomNavBar.routeName;
+  static final String initial = SplashScreen.routeName;
   static final GoRouter appRouter = GoRouter(
     initialLocation: initial,
 
