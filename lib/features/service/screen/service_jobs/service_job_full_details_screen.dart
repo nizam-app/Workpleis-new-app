@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
-import 'package:workpleis/features/service/service_jobs/submit_quote_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/submit_quote_screen.dart';
 
 /// Flutter conversion of `lib/features/service/screen/react.tsx`.
 ///
@@ -86,7 +86,7 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    _AttachFileCard(onTap: () {}),
+                    // _AttachFileCard(onTap: () {}),
                     SizedBox(height: 16.h),
                     _JobDetailsCard(
                       title: title,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
-import 'package:workpleis/features/service/service_jobs/service_quote_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/service_quote_screen.dart';
 
 class QuoteSubmittedSuccessScreen extends StatelessWidget {
   const QuoteSubmittedSuccessScreen({super.key});
