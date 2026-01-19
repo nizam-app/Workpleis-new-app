@@ -28,7 +28,13 @@ import 'package:workpleis/features/client/Jobs/screen/postJob_wizard_screen.dart
 import 'package:workpleis/features/client/Jobs/screen/send_report_screen.dart';
 import 'package:workpleis/features/client/Jobs/screen/request_refund_screen.dart';
 import 'package:workpleis/features/client/Jobs/screen/job_completed_success_screen.dart';
+import 'package:workpleis/features/client/Jobs/screen/job_details_screen.dart';
+import 'package:workpleis/features/client/Jobs/model/flow_type.dart';
+import 'package:workpleis/features/client/Jobs/screen/proposal_details_screen.dart';
+import 'package:workpleis/features/client/Jobs/screen/account_add_screen.dart';
 import 'package:workpleis/features/nav_bar/screen/bottom_nav_bar.dart';
+import 'package:workpleis/features/nav_bar/screen/service_bottom_nav_bar.dart';
+import 'package:workpleis/features/notifications/create_new_project_flow.dart';
 import 'package:workpleis/features/notifications/screen/notifications_screen.dart';
 // Onboarding
 import 'package:workpleis/features/onboarding/screen/onboarding_screen_01.dart';
@@ -37,9 +43,13 @@ import 'package:workpleis/features/onboarding/screen/onboarding_screen_05.dart';
 import 'package:workpleis/features/role_screen/screen/genNotifications.dart';
 import 'package:workpleis/features/role_screen/screen/seclect_role_screen.dart';
 import 'package:workpleis/features/role_screen/screen/seclect_type_screen.dart';
+import 'package:workpleis/features/service/screen/get_paid_now_screen.dart';
+import 'package:workpleis/features/service/screen/service_home_screen.dart';
+import 'package:workpleis/features/service/screen/set_up_withdrawals_screen.dart';
 // Splash
 import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 
+import '../features/client/Jobs/model/project_model.dart';
 import '../features/client/message/screen/messages_screen.dart';
 import '../features/client/profile/screen/profile_screen.dart';
 import '../features/client/project/screen/project_screen.dart';
@@ -49,7 +59,7 @@ import 'error_screen.dart';
 class AppRouter {
   // initial route
   //static const String initial = ClientHomeScreen.routeName;
-  static final String initial = BottomNavBar.routeName;
+  static final String initial = SplashScreen.routeName;
   static final GoRouter appRouter = GoRouter(
     initialLocation: initial,
 
@@ -81,6 +91,27 @@ class AppRouter {
         name: ReferralScreen.routeName,
         builder: (context, state) =>  ReferralScreen(),
       ),
+       GoRoute(
+        path: CreateNewProjectFlow.routeName,
+        name: CreateNewProjectFlow.routeName,
+        builder: (context, state) =>  CreateNewProjectFlow(),
+      ),
+        GoRoute(
+        path: ServiceHomeScreen.routeName,
+        name: ServiceHomeScreen.routeName,
+        builder: (context, state) =>  ServiceHomeScreen(),
+      ),
+      GoRoute(
+        path: GetPaidNowScreen.routeName,
+        name: GetPaidNowScreen.routeName,
+        builder: (context, state) => const GetPaidNowScreen(),
+      ),
+      GoRoute(
+        path: SetUpWithdrawalsScreen.routeName,
+        name: SetUpWithdrawalsScreen.routeName,
+        builder: (context, state) => const SetUpWithdrawalsScreen(),
+      ),
+
 
 
       // 🔹 Onboarding
@@ -261,6 +292,11 @@ class AppRouter {
         name: BottomNavBar.routeName,
         builder: (context, state) => const BottomNavBar(),
       ),
+      GoRoute(
+        path: ServiceBottomNavBar.routeName,
+        name: ServiceBottomNavBar.routeName,
+        builder: (context, state) => const ServiceBottomNavBar(),
+      ),
 
       // 🔹 Client Home
       GoRoute(
@@ -269,11 +305,35 @@ class AppRouter {
         builder: (context, state) => const ClientHomeScreen(),
       ),
 
-      // 🔹 Client Jobs
+      // 🔹 Client Projects/Jobs (Unified flow)
       GoRoute(
-        path: ClientJobsScreen.routeName,
-        name: ClientJobsScreen.routeName,
-        builder: (context, state) => const ClientJobsScreen(),
+        path: ClientProjectsScreen.routeName,
+        name: ClientProjectsScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          final flowType = extras?['flowType'] as FlowType? ?? FlowType.project;
+          return ClientProjectsScreen(flowType: flowType);
+        },
+      ),
+      GoRoute(
+        path: ProjectDetailsScreen.routeName,
+        name: ProjectDetailsScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          final project = extras?['project'] as ProjectModel?;
+          final flowType = extras?['flowType'] as FlowType? ?? FlowType.project;
+          return ProjectDetailsScreen(project: project, flowType: flowType);
+        },
+      ),
+      GoRoute(
+        path: ProposalDetailsScreen.routeName,
+        name: ProposalDetailsScreen.routeName,
+        builder: (context, state) => ProposalDetailsScreen(proposal: state.extra as dynamic),
+      ),
+      GoRoute(
+        path: AccountAddScreen.routeName,
+        name: AccountAddScreen.routeName,
+        builder: (context, state) => const AccountAddScreen(),
       ),
       GoRoute(
         path: SendReportScreen.routeName,
@@ -286,11 +346,11 @@ class AppRouter {
         builder: (context, state) => const RequestRefundScreen(),
       ),
 
-      // 🔹 Job Completed Success
+      // 🔹 Project Completed Success
       GoRoute(
-        path: JobCompletedSuccessScreen.routeName,
-        name: JobCompletedSuccessScreen.routeName,
-        builder: (context, state) => const JobCompletedSuccessScreen(),
+        path: ProjectCompletedSuccessScreen.routeName,
+        name: ProjectCompletedSuccessScreen.routeName,
+        builder: (context, state) => const ProjectCompletedSuccessScreen(),
       ),
 
       // 🔹 Project

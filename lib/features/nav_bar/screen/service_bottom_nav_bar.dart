@@ -4,36 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
-import 'package:workpleis/features/client/project/screen/project_screen.dart';
-import 'package:workpleis/features/client/screen/client_home_screen.dart';
-import 'package:workpleis/features/client/Jobs/screen/jobs.dart';
-import 'package:workpleis/features/client/Jobs/model/flow_type.dart';
 import 'package:workpleis/features/client/message/screen/messages_screen.dart';
 import 'package:workpleis/features/client/profile/screen/profile_screen.dart';
+import 'package:workpleis/features/service/screen/service_home_screen.dart';
+import 'package:workpleis/features/service/service_jobs/service_jobs_screen.dart';
 
-final selectedIndexProvider = StateProvider<int>((ref) => 0);
+final _serviceSelectedIndexProvider = StateProvider<int>((ref) => 0);
 
-class BottomNavBar extends ConsumerStatefulWidget {
-  const BottomNavBar({super.key});
-  static const String routeName = '/BottomNavBar';
+/// Service Provider bottom navigation (same UI as client, different tabs).
+class ServiceBottomNavBar extends ConsumerStatefulWidget {
+  const ServiceBottomNavBar({super.key});
+
+  static const String routeName = '/ServiceBottomNavBar';
 
   @override
-  ConsumerState<BottomNavBar> createState() => _BottomNavBarState();
+  ConsumerState<ServiceBottomNavBar> createState() => _ServiceBottomNavBarState();
 }
 
-class _BottomNavBarState extends ConsumerState<BottomNavBar> {
+class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = ref.watch(selectedIndexProvider);
+    final selectedIndex = ref.watch(_serviceSelectedIndexProvider);
     final navBarHeight = math.max(kBottomNavigationBarHeight, 72.h);
 
     return Scaffold(
       body: IndexedStack(
         index: selectedIndex,
         children: [
-          const ClientHomeScreen(),
-          ClientProjectsScreen(flowType: FlowType.job), // Jobs tab
-          ClientProjectsScreen(flowType: FlowType.project), // Project tab - same flow, different terminology
+          const ServiceHomeScreen(),
+          const JobsScreen(),
+          const _ServicePlaceholderScreen(title: 'Projects'),
           const MessageScreen(),
           const ProfileScreen(),
         ],
@@ -56,48 +56,67 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
                   filledIcon: Icons.home,
                   label: 'Home',
                   isSelected: selectedIndex == 0,
-                  onTap: () {
-                    ref.read(selectedIndexProvider.notifier).state = 0;
-                  },
+                  onTap: () =>
+                      ref.read(_serviceSelectedIndexProvider.notifier).state = 0,
                 ),
                 _NavItem(
                   icon: Icons.work_outline,
                   filledIcon: Icons.work,
                   label: 'Jobs',
                   isSelected: selectedIndex == 1,
-                  onTap: () {
-                    ref.read(selectedIndexProvider.notifier).state = 1;
-                  },
+                  onTap: () =>
+                      ref.read(_serviceSelectedIndexProvider.notifier).state = 1,
                 ),
                 _NavItem(
-                  icon: Icons.list_alt,
+                  icon: Icons.account_balance_wallet_outlined,
                   filledIcon: Icons.list_alt_outlined,
-                  label: 'Project',
+                  label: 'Projects',
                   isSelected: selectedIndex == 2,
-                  onTap: () {
-                    ref.read(selectedIndexProvider.notifier).state = 2;
-                  },
+                  onTap: () =>
+                      ref.read(_serviceSelectedIndexProvider.notifier).state = 2,
                 ),
                 _NavItem(
                   icon: Icons.mail_outline,
                   filledIcon: Icons.mail,
                   label: 'Message',
                   isSelected: selectedIndex == 3,
-                  onTap: () {
-                    ref.read(selectedIndexProvider.notifier).state = 3;
-                  },
+                  onTap: () =>
+                      ref.read(_serviceSelectedIndexProvider.notifier).state = 3,
                 ),
                 _NavItem(
                   icon: Icons.person_outline,
                   filledIcon: Icons.person,
                   label: 'Profile',
                   isSelected: selectedIndex == 4,
-                  onTap: () {
-                    ref.read(selectedIndexProvider.notifier).state = 4;
-                  },
+                  onTap: () =>
+                      ref.read(_serviceSelectedIndexProvider.notifier).state = 4,
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ServicePlaceholderScreen extends StatelessWidget {
+  final String title;
+
+  const _ServicePlaceholderScreen({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AllColor.white,
+      body: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+            color: AllColor.black,
+            fontFamily: 'sf_pro',
           ),
         ),
       ),
@@ -161,3 +180,4 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
+
