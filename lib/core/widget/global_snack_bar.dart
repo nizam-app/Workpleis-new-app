@@ -19,7 +19,7 @@ class GlobalSnackBar {
     // Remove any existing
     hide();
 
-    final overlay = Overlay.of(context, rootOverlay: true);
+    final overlay = Overlay.maybeOf(context, rootOverlay: true);
     if (overlay == null) return;
 
     final media = MediaQuery.of(context);
@@ -59,7 +59,7 @@ class GlobalSnackBar {
   }
 
   static void hide() {
-    _entry?..remove();
+    _entry?.remove();
     _entry = null;
   }
 
@@ -87,7 +87,6 @@ class GlobalSnackBar {
           fg: Colors.black87,
         );
       case CustomSnackType.info:
-      default:
         return _SnackStyle(
           icon: Icons.info_rounded,
           accent: const Color(0xFF1565C0),
@@ -188,7 +187,7 @@ class _SnackCardState extends State<_SnackCard>
                   const SizedBox(height: 2),
                   Text(
                     widget.message,
-                    style: TextStyle(color: widget.fg.withOpacity(0.85), fontSize: 13.5),
+                    style: TextStyle(color: widget.fg.withAlpha(217), fontSize: 13.5),
                   ),
                 ],
               ),
@@ -197,7 +196,7 @@ class _SnackCardState extends State<_SnackCard>
               const SizedBox(width: 8),
               InkWell(
                 onTap: widget.onClose,
-                child: Icon(Icons.close_rounded, color: widget.fg.withOpacity(0.7), size: 20),
+                child: Icon(Icons.close_rounded, color: widget.fg.withAlpha(179), size: 20),
               ),
             ],
           ],

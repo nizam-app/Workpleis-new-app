@@ -46,6 +46,7 @@ import 'package:workpleis/features/role_screen/screen/seclect_type_screen.dart';
 import 'package:workpleis/features/service/screen/get_paid_now_screen.dart';
 import 'package:workpleis/features/service/screen/service_home_screen.dart';
 import 'package:workpleis/features/service/screen/set_up_withdrawals_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/service_job_full_details_screen.dart';
 import 'package:workpleis/features/service/message/screen/chat_screen.dart';
 // Splash
 import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
@@ -70,9 +71,9 @@ class AppRouter {
         location: badPath,
         error: state.error,
         onRetry: () => context.go(initial),
-        onReport: () {
+        onReport: (ctx) {
           GlobalSnackBar.show(
-            context,
+            ctx,
             title: "We're sorry",
             message: "Thanks, we'll look into this.",
           );
@@ -375,12 +376,42 @@ class AppRouter {
           final isOnline = (extras?['isOnline'] as bool?) ?? true;
           final peerAvatarAsset =
               (extras?['peerAvatarAsset'] as String?) ??
-                  'assets/images/profile.png';
+              'assets/images/profile.png';
 
           return ChatScreen(
             peerName: peerName,
             isOnline: isOnline,
             peerAvatarAsset: peerAvatarAsset,
+          );
+        },
+      ),
+
+      // 🔹 Service Jobs
+      GoRoute(
+        path: ServiceJobFullDetailsScreen.routeName,
+        name: ServiceJobFullDetailsScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          final title =
+              (extras?['title'] as String?) ??
+              'I have two tickets for the Al-Nassr  Paris match for sale design';
+          final price = (extras?['price'] as String?) ?? r'$600';
+          final quote = (extras?['quote'] as String?) ?? '8 Sec';
+          final location = (extras?['location'] as String?) ?? 'Jaddah';
+          final categories =
+              (extras?['categories'] as List<dynamic>?)
+                  ?.map((e) => e.toString())
+                  .toList() ??
+              const ['Design', 'Banner Design'];
+          final isFromChat = (extras?['isFromChat'] as bool?) ?? false;
+
+          return ServiceJobFullDetailsScreen(
+            title: title,
+            price: price,
+            quote: quote,
+            location: location,
+            categories: categories,
+            isFromChat: isFromChat,
           );
         },
       ),
