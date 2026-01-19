@@ -14,7 +14,7 @@ class CustomGoErrorPage extends StatelessWidget {
   final String location;
   final Object? error;
   final VoidCallback? onRetry;
-  final VoidCallback? onReport;
+  final void Function(BuildContext context)? onReport;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _ErrorCard extends StatefulWidget {
   final String subtitle;
   final String details;
   final VoidCallback? onRetry;
-  final VoidCallback? onReport;
+  final void Function(BuildContext context)? onReport;
 
   @override
   State<_ErrorCard> createState() => _ErrorCardState();
@@ -112,7 +112,7 @@ class _ErrorCardState extends State<_ErrorCard> {
 
     return Card(
       elevation: 10,
-      shadowColor: Colors.black.withOpacity(0.15),
+      shadowColor: Colors.black.withAlpha(38),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
@@ -132,7 +132,7 @@ class _ErrorCardState extends State<_ErrorCard> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF2563EB).withOpacity(0.28),
+                    color: const Color(0xFF2563EB).withAlpha(71),
                     blurRadius: 20.r,
                     spreadRadius: 2.r,
                   ),
@@ -159,7 +159,8 @@ class _ErrorCardState extends State<_ErrorCard> {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: widget.onReport,
+                    onPressed:
+                        widget.onReport == null ? null : () => widget.onReport!(context),
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       side: BorderSide(color: Colors.grey.shade300),
@@ -219,7 +220,7 @@ class _ErrorCardState extends State<_ErrorCard> {
                 width: double.infinity,
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.08),
+                  color: Colors.grey.withAlpha(20),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: SingleChildScrollView(

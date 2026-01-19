@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/service/screen/service_jobs/service_job_full_details_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
@@ -120,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 20.h),
                   Text(
                     'Oct 17, 2022',
                     textAlign: TextAlign.center,
@@ -157,10 +158,19 @@ class _ChatScreenState extends State<ChatScreen> {
                               offer: message.offer!,
                               timeLabel: message.timeLabel,
                               onViewJob: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('View Job (coming soon)'),
-                                  ),
+                                context.push(
+                                  ServiceJobFullDetailsScreen.routeName,
+                                  extra: <String, dynamic>{
+                                    'title': message.offer!.description,
+                                    'price': message.offer!.priceLabel,
+                                    'quote': message.offer!.timeLabel,
+                                    'location': 'Jaddah',
+                                    'categories': const [
+                                      'Design',
+                                      'Banner Design',
+                                    ],
+                                    'isFromChat': true,
+                                  },
                                 );
                               },
                               onAccept: () {

@@ -20,6 +20,7 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
     this.price = r'$600',
     this.location = 'Jaddah',
     this.categories = const ['Design', 'Banner Design'],
+    this.isFromChat = false,
   });
 
   static const String routeName = '/service_job_full_details';
@@ -29,6 +30,7 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
   final String price;
   final String location;
   final List<String> categories;
+  final bool isFromChat;
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +78,15 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 8.h),
-                    Text(
-                      'Attach File',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AllColor.black,
-                        fontFamily: 'SF Pro Display',
-                      ),
-                    ),
+                    // Text(
+                    //   'Attach File',
+                    //   style: TextStyle(
+                    //     fontSize: 18.sp,
+                    //     fontWeight: FontWeight.w700,
+                    //     color: AllColor.black,
+                    //     fontFamily: 'SF Pro Display',
+                    //   ),
+                    // ),
                     SizedBox(height: 12.h),
                     // _AttachFileCard(onTap: () {}),
                     SizedBox(height: 16.h),
@@ -123,7 +125,7 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
                 shape: const StadiumBorder(),
               ),
               child: Text(
-                'Apply for job',
+                isFromChat ? 'Accept Offer' : 'Apply for project',
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w500,

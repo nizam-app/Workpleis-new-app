@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
 import 'package:workpleis/features/service/screen/service_jobs/service_job_full_details_screen.dart';
 
@@ -195,11 +196,11 @@ class _JobCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Handle job card tap
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ServiceJobFullDetailsScreen(),
-          ),
+        context.push(
+          ServiceJobFullDetailsScreen.routeName,
+          extra: <String, dynamic>{
+            'isFromChat': false,
+          },
         );
       },
       child: Container(
