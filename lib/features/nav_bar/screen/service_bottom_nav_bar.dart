@@ -7,7 +7,7 @@ import 'package:workpleis/core/constants/color_control/all_color.dart';
 import 'package:workpleis/features/client/message/screen/messages_screen.dart';
 import 'package:workpleis/features/client/profile/screen/profile_screen.dart';
 import 'package:workpleis/features/service/screen/service_home_screen.dart';
-import 'package:workpleis/features/service/service_jobs/service_jobs_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/service_jobs_screen.dart';
 
 final _serviceSelectedIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -18,7 +18,8 @@ class ServiceBottomNavBar extends ConsumerStatefulWidget {
   static const String routeName = '/ServiceBottomNavBar';
 
   @override
-  ConsumerState<ServiceBottomNavBar> createState() => _ServiceBottomNavBarState();
+  ConsumerState<ServiceBottomNavBar> createState() =>
+      _ServiceBottomNavBarState();
 }
 
 class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
@@ -33,7 +34,7 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
         children: [
           const ServiceHomeScreen(),
           const JobsScreen(),
-          const _ServicePlaceholderScreen(title: 'Projects'),
+          const JobsScreen(isProject: true),
           const MessageScreen(),
           const ProfileScreen(),
         ],
@@ -57,7 +58,8 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
                   label: 'Home',
                   isSelected: selectedIndex == 0,
                   onTap: () =>
-                      ref.read(_serviceSelectedIndexProvider.notifier).state = 0,
+                      ref.read(_serviceSelectedIndexProvider.notifier).state =
+                          0,
                 ),
                 _NavItem(
                   icon: Icons.work_outline,
@@ -65,7 +67,8 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
                   label: 'Jobs',
                   isSelected: selectedIndex == 1,
                   onTap: () =>
-                      ref.read(_serviceSelectedIndexProvider.notifier).state = 1,
+                      ref.read(_serviceSelectedIndexProvider.notifier).state =
+                          1,
                 ),
                 _NavItem(
                   icon: Icons.account_balance_wallet_outlined,
@@ -73,7 +76,8 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
                   label: 'Projects',
                   isSelected: selectedIndex == 2,
                   onTap: () =>
-                      ref.read(_serviceSelectedIndexProvider.notifier).state = 2,
+                      ref.read(_serviceSelectedIndexProvider.notifier).state =
+                          2,
                 ),
                 _NavItem(
                   icon: Icons.mail_outline,
@@ -81,7 +85,8 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
                   label: 'Message',
                   isSelected: selectedIndex == 3,
                   onTap: () =>
-                      ref.read(_serviceSelectedIndexProvider.notifier).state = 3,
+                      ref.read(_serviceSelectedIndexProvider.notifier).state =
+                          3,
                 ),
                 _NavItem(
                   icon: Icons.person_outline,
@@ -89,7 +94,8 @@ class _ServiceBottomNavBarState extends ConsumerState<ServiceBottomNavBar> {
                   label: 'Profile',
                   isSelected: selectedIndex == 4,
                   onTap: () =>
-                      ref.read(_serviceSelectedIndexProvider.notifier).state = 4,
+                      ref.read(_serviceSelectedIndexProvider.notifier).state =
+                          4,
                 ),
               ],
             ),
@@ -180,4 +186,3 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
-

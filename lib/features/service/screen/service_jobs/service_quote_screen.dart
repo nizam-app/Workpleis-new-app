@@ -291,145 +291,154 @@ class _QuoteJobCard extends StatelessWidget {
         ? const Color(0xFF2C58FF)
         : const Color(0xFFFF3B30);
 
+    final mainContent = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Top row: avatar + user info + status badge
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 20.r,
+              backgroundColor: const Color(0xFFE6E7EB),
+              child: Icon(
+                Icons.person,
+                size: 20.sp,
+                color: const Color(0xFF7D7D7D),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    job.userName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AllColor.black,
+                      fontFamily: 'SF Pro Display',
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    '${job.statusLabel} - ${job.timestamp}',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xB2000000), // rgba(0,0,0,0.7)
+                      fontFamily: 'SF Pro Display',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: badgeBg,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                job.statusLabel,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: badgeText,
+                  fontFamily: 'SF Pro Display',
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+
+        // Title
+        Text(
+          job.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+            color: AllColor.black,
+            fontFamily: 'Inter',
+            height: 1.2,
+          ),
+        ),
+        SizedBox(height: 12.h),
+
+        // Info boxes
+        Row(
+          children: [
+            Expanded(
+              child: _InfoBox(label: 'Quote', value: job.quote),
+            ),
+            SizedBox(width: 9.w),
+            Expanded(
+              child: _InfoBox(label: 'Price', value: job.price),
+            ),
+            SizedBox(width: 9.w),
+            Expanded(
+              child: _InfoBox(label: 'Location', value: job.location),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+
+        // Services
+        Text(
+          'Services'.toUpperCase(),
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF7D7D7D),
+            fontFamily: 'SF Pro Display',
+            letterSpacing: 0.5,
+          ),
+        ),
+        SizedBox(height: 9.h),
+        Wrap(
+          spacing: 4.w,
+          runSpacing: 4.h,
+          children: job.services.map((s) => _ServiceTag(label: s)).toList(),
+        ),
+      ],
+    );
+
     return Container(
       width: double.infinity,
-      height: job.isAccepted ? 334.h : 278.h,
+      constraints: BoxConstraints(minHeight: job.isAccepted ? 334.h : 278.h),
       decoration: BoxDecoration(
         color: AllColor.white,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: const Color(0xFFE6E7EB), width: 1),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top row: avatar + user info + status badge
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundColor: const Color(0xFFE6E7EB),
-                  child: Icon(
-                    Icons.person,
-                    size: 20.sp,
-                    color: const Color(0xFF7D7D7D),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: job.isAccepted
+            ? Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h + 40.h),
+                    child: mainContent,
                   ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        job.userName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AllColor.black,
-                          fontFamily: 'SF Pro Display',
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        '${job.statusLabel} - ${job.timestamp}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xB2000000), // rgba(0,0,0,0.7)
-                          fontFamily: 'SF Pro Display',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: badgeBg,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Text(
-                    job.statusLabel,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: badgeText,
-                      fontFamily: 'SF Pro Display',
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: _MessageButton(
+                      onTap: () {
+                        // TODO: open chat / message screen
+                      },
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-
-            // Title
-            Text(
-              job.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-                color: AllColor.black,
-                fontFamily: 'Inter',
-                height: 1.2,
-              ),
-            ),
-            SizedBox(height: 12.h),
-
-            // Info boxes
-            Row(
-              children: [
-                Expanded(
-                  child: _InfoBox(label: 'Quote', value: job.quote),
-                ),
-                SizedBox(width: 9.w),
-                Expanded(
-                  child: _InfoBox(label: 'Price', value: job.price),
-                ),
-                SizedBox(width: 9.w),
-                Expanded(
-                  child: _InfoBox(label: 'Location', value: job.location),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-
-            // Services
-            Text(
-              'Services'.toUpperCase(),
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF7D7D7D),
-                fontFamily: 'SF Pro Display',
-                letterSpacing: 0.5,
-              ),
-            ),
-            SizedBox(height: 9.h),
-            Wrap(
-              spacing: 4.w,
-              runSpacing: 4.h,
-              children: job.services.map((s) => _ServiceTag(label: s)).toList(),
-            ),
-
-            if (job.isAccepted) ...[
-              const Spacer(),
-              _MessageButton(
-                onTap: () {
-                  // TODO: open chat / message screen
-                },
-              ),
-            ],
-          ],
-        ),
+                ],
+              )
+            : mainContent,
       ),
     );
   }

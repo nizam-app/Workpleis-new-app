@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
-import 'package:workpleis/features/service/service_jobs/quote_submitted_success_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/quote_submitted_success_screen.dart';
 
 /// Flutter conversion of `lib/features/service/screen/react.tsx`.
 ///

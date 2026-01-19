@@ -46,6 +46,7 @@ import 'package:workpleis/features/role_screen/screen/seclect_type_screen.dart';
 import 'package:workpleis/features/service/screen/get_paid_now_screen.dart';
 import 'package:workpleis/features/service/screen/service_home_screen.dart';
 import 'package:workpleis/features/service/screen/set_up_withdrawals_screen.dart';
+import 'package:workpleis/features/service/message/screen/chat_screen.dart';
 // Splash
 import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 
@@ -59,7 +60,7 @@ import 'error_screen.dart';
 class AppRouter {
   // initial route
   //static const String initial = ClientHomeScreen.routeName;
-  static final String initial = SplashScreen.routeName;
+  static final String initial = ServiceBottomNavBar.routeName;
   static final GoRouter appRouter = GoRouter(
     initialLocation: initial,
 
@@ -89,17 +90,17 @@ class AppRouter {
       GoRoute(
         path: ReferralScreen.routeName,
         name: ReferralScreen.routeName,
-        builder: (context, state) =>  ReferralScreen(),
+        builder: (context, state) => ReferralScreen(),
       ),
-       GoRoute(
+      GoRoute(
         path: CreateNewProjectFlow.routeName,
         name: CreateNewProjectFlow.routeName,
-        builder: (context, state) =>  CreateNewProjectFlow(),
+        builder: (context, state) => CreateNewProjectFlow(),
       ),
-        GoRoute(
+      GoRoute(
         path: ServiceHomeScreen.routeName,
         name: ServiceHomeScreen.routeName,
-        builder: (context, state) =>  ServiceHomeScreen(),
+        builder: (context, state) => ServiceHomeScreen(),
       ),
       GoRoute(
         path: GetPaidNowScreen.routeName,
@@ -111,8 +112,6 @@ class AppRouter {
         name: SetUpWithdrawalsScreen.routeName,
         builder: (context, state) => const SetUpWithdrawalsScreen(),
       ),
-
-
 
       // 🔹 Onboarding
       GoRoute(
@@ -328,7 +327,8 @@ class AppRouter {
       GoRoute(
         path: ProposalDetailsScreen.routeName,
         name: ProposalDetailsScreen.routeName,
-        builder: (context, state) => ProposalDetailsScreen(proposal: state.extra as dynamic),
+        builder: (context, state) =>
+            ProposalDetailsScreen(proposal: state.extra as dynamic),
       ),
       GoRoute(
         path: AccountAddScreen.routeName,
@@ -365,6 +365,24 @@ class AppRouter {
         path: MessageScreen.routeName,
         name: MessageScreen.routeName,
         builder: (context, state) => const MessageScreen(),
+      ),
+      GoRoute(
+        path: ChatScreen.routeName,
+        name: ChatScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          final peerName = (extras?['peerName'] as String?) ?? 'Kazi Mahbub';
+          final isOnline = (extras?['isOnline'] as bool?) ?? true;
+          final peerAvatarAsset =
+              (extras?['peerAvatarAsset'] as String?) ??
+                  'assets/images/profile.png';
+
+          return ChatScreen(
+            peerName: peerName,
+            isOnline: isOnline,
+            peerAvatarAsset: peerAvatarAsset,
+          );
+        },
       ),
 
       // 🔹 Profile
