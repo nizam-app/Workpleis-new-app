@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/service/service_jobs/quote_submitted_success_screen.dart';
 
 /// Flutter conversion of `lib/features/service/screen/react.tsx`.
 ///
@@ -31,8 +32,9 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
         'I am seeking a skilled and reliable service provider to handle the assembly of furniture in my shop. \n\n'
         'The ideal candidate will have experience with assembling various types of furniture, including shelving units, display cases, and seating. ',
   );
-  final TextEditingController _projectCostCtrl =
-      TextEditingController(text: 'SAR 1,500');
+  final TextEditingController _projectCostCtrl = TextEditingController(
+    text: 'SAR 1,500',
+  );
 
   int _selectedTimelineId = 4; // 1-2 Days
 
@@ -101,8 +103,9 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
       return;
     }
 
-    final existingKeys =
-        _attachedFiles.map((e) => '${e.name}_${e.sizeBytes}').toSet();
+    final existingKeys = _attachedFiles
+        .map((e) => '${e.name}_${e.sizeBytes}')
+        .toSet();
 
     setState(() {
       for (final f in valid) {
@@ -128,20 +131,23 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
   }
 
   void _submit() {
-    final timeline =
-        timelineOptions.firstWhere((t) => t.id == _selectedTimelineId).label;
+    final timeline = timelineOptions
+        .firstWhere((t) => t.id == _selectedTimelineId)
+        .label;
 
-    // Keep the same behavior as React (show success feedback).
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Proposal submitted successfully!')),
+    debugPrint(
+      'Submitting proposal: {'
+      'description: ${_descriptionCtrl.text}, '
+      'timeline: $timeline, '
+      'cost: ${_projectCostCtrl.text}, '
+      'files: ${_attachedFiles.map((e) => e.name).toList()}'
+      '}',
     );
 
-    debugPrint('Submitting proposal: {'
-        'description: ${_descriptionCtrl.text}, '
-        'timeline: $timeline, '
-        'cost: ${_projectCostCtrl.text}, '
-        'files: ${_attachedFiles.map((e) => e.name).toList()}'
-        '}');
+    // Show success screen (matches the provided design image).
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const QuoteSubmittedSuccessScreen()),
+    );
   }
 
   @override
@@ -211,7 +217,9 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0x8C808080), // rgba(128,128,128,0.55)
+                        color: const Color(
+                          0x8C808080,
+                        ), // rgba(128,128,128,0.55)
                         fontFamily: 'SF Pro Display',
                       ),
                     ),
@@ -263,7 +271,8 @@ class _SubmitQuoteScreenState extends State<SubmitQuoteScreen> {
                         return _TimelineChip(
                           label: opt.label,
                           selected: isSelected,
-                          onTap: () => setState(() => _selectedTimelineId = opt.id),
+                          onTap: () =>
+                              setState(() => _selectedTimelineId = opt.id),
                         );
                       }).toList(),
                     ),
@@ -485,7 +494,9 @@ class _AttachUploadArea extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0x8C808080), // rgba(128,128,128,0.55)
+                        color: const Color(
+                          0x8C808080,
+                        ), // rgba(128,128,128,0.55)
                         fontFamily: 'Inter',
                       ),
                     ),
@@ -501,10 +512,7 @@ class _AttachUploadArea extends StatelessWidget {
 }
 
 class _AttachedFileRow extends StatelessWidget {
-  const _AttachedFileRow({
-    required this.file,
-    required this.onDelete,
-  });
+  const _AttachedFileRow({required this.file, required this.onDelete});
 
   final _AttachedFile file;
   final VoidCallback onDelete;
@@ -538,7 +546,9 @@ class _AttachedFileRow extends StatelessWidget {
                       : Icon(
                           ext == 'pdf'
                               ? Icons.picture_as_pdf
-                              : (isImage ? Icons.image : Icons.insert_drive_file),
+                              : (isImage
+                                    ? Icons.image
+                                    : Icons.insert_drive_file),
                           size: 22.sp,
                           color: const Color(0xFF777777),
                         ),
@@ -730,10 +740,7 @@ class _HeaderIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const _HeaderIconButton({
-    required this.icon,
-    required this.onTap,
-  });
+  const _HeaderIconButton({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -749,11 +756,7 @@ class _HeaderIconButton extends StatelessWidget {
           border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
         ),
         alignment: Alignment.center,
-        child: Icon(
-          icon,
-          size: 24.sp,
-          color: const Color(0xFF111111),
-        ),
+        child: Icon(icon, size: 24.sp, color: const Color(0xFF111111)),
       ),
     );
   }
