@@ -48,6 +48,7 @@ import 'package:workpleis/features/service/screen/service_home_screen.dart';
 import 'package:workpleis/features/service/screen/set_up_withdrawals_screen.dart';
 import 'package:workpleis/features/service/screen/service_jobs/service_job_full_details_screen.dart';
 import 'package:workpleis/features/service/message/screen/chat_screen.dart';
+import 'package:workpleis/features/service/message/screen/order_history_screen.dart';
 // Splash
 import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 
@@ -414,6 +415,11 @@ class AppRouter {
             isFromChat: isFromChat,
           );
         },
+      ),
+      GoRoute(
+        path: OrderHistoryScreen.routeName,
+        name: OrderHistoryScreen.routeName,
+        builder: (context, state) => const OrderHistoryScreen(),
       ),
 
       // 🔹 Profile

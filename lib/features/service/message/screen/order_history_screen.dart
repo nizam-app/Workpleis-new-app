@@ -14,6 +14,8 @@ import 'package:workpleis/core/constants/color_control/all_color.dart';
 class OrderHistoryScreen extends StatelessWidget {
   const OrderHistoryScreen({super.key});
 
+  static const String routeName = '/order_history';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +24,11 @@ class OrderHistoryScreen extends StatelessWidget {
         child: Stack(
           children: [
             // Status Bar (iPhone style)
-            _StatusBar(),
-            
+            // _StatusBar(),
+
             // Header Container
-            _HeaderContainer(
-              onBackTap: () => context.pop(),
-            ),
-            
+            _HeaderContainer(onBackTap: () => context.pop()),
+
             // Progress Section Title
             Positioned(
               left: 24.w,
@@ -43,23 +43,12 @@ class OrderHistoryScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Review Container with Timeline
-            Positioned(
-              left: 24.w,
-              top: 183.h,
-              child: _ReviewContainer(),
-            ),
-            
+            Positioned(left: 24.w, top: 183.h, child: _ReviewContainer()),
+
             // Bottom Section (Button + Home Indicator)
             _BottomSection(),
-            
-            // Message Icon Button
-            Positioned(
-              right: 24.w,
-              top: 74.h,
-              child: _MessageButton(),
-            ),
           ],
         ),
       ),
@@ -92,7 +81,7 @@ class _StatusBar extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Levels (Battery, Wifi, Cellular)
           Padding(
             padding: EdgeInsets.only(right: 24.w),
@@ -105,15 +94,11 @@ class _StatusBar extends StatelessWidget {
                   color: AllColor.black,
                 ),
                 SizedBox(width: 6.w),
-                
+
                 // Wifi Icon
-                Icon(
-                  Icons.wifi,
-                  size: 17.142.sp,
-                  color: AllColor.black,
-                ),
+                Icon(Icons.wifi, size: 17.142.sp, color: AllColor.black),
                 SizedBox(width: 6.w),
-                
+
                 // Battery Icon
                 Icon(
                   Icons.battery_full,
@@ -129,7 +114,7 @@ class _StatusBar extends StatelessWidget {
   }
 }
 
-/// Header Container with Back Arrow and Title
+/// Header Container with Back Arrow, Title, and Message Button
 class _HeaderContainer extends StatelessWidget {
   final VoidCallback onBackTap;
 
@@ -140,52 +125,76 @@ class _HeaderContainer extends StatelessWidget {
     return Positioned(
       left: 0,
       right: 0,
-      top: 74.h,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Back Arrow Button (left aligned)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Material(
-                color: AllColor.white,
+      top: 15.h,
+      child: Container(
+        height: 56.h,
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Back Arrow Button (left)
+            Material(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(8.r),
+              child: InkWell(
+                onTap: onBackTap,
                 borderRadius: BorderRadius.circular(8.r),
-                child: InkWell(
-                  onTap: onBackTap,
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFFE0E0E0)),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Transform.scale(
-                      scaleY: -1,
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 24.sp,
-                        color: const Color(0xFF111111),
-                      ),
-                    ),
+                child: Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFE0E0E0)),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 20.sp,
+                    color: const Color(0xFF111111),
                   ),
                 ),
               ),
             ),
-          ),
-          
-          // Title (centered)
-          Text(
-            'Delivery Process',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-              color: AllColor.black,
-              fontFamily: 'SF Pro Display',
+
+            // Title (centered)
+            Text(
+              'Delivery Process',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: AllColor.black,
+                fontFamily: 'SF Pro Display',
+              ),
             ),
-          ),
-        ],
+
+            // Message Icon Button (right)
+            Material(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(8.r),
+              child: InkWell(
+                onTap: () {
+                  // Handle message button tap
+                },
+                borderRadius: BorderRadius.circular(8.r),
+                child: Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFDCDCDC)),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.mail_outline,
+                    size: 20.sp,
+                    color: const Color(0xFF111111),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -207,27 +216,15 @@ class _ReviewContainer extends StatelessWidget {
             border: Border.all(color: const Color(0xFFF2F2F2)),
           ),
         ),
-        
+
         // Timeline
-        Positioned(
-          left: 42.w,
-          top: 0,
-          child: _Timeline(),
-        ),
-        
+        Positioned(left: 42.w, top: 24.h, child: _Timeline()),
+
         // Progress Frame
-        Positioned(
-          left: 86.w,
-          top: 0,
-          child: _ProgressFrame(),
-        ),
-        
+        Positioned(left: 86.w, top: 24.h, child: _ProgressFrame()),
+
         // Delivery Frame
-        Positioned(
-          left: 86.w,
-          top: 103.h,
-          child: _DeliveryFrame(),
-        ),
+        Positioned(left: 86.w, top: 127.h, child: _DeliveryFrame()),
       ],
     );
   }
@@ -237,10 +234,7 @@ class _ReviewContainer extends StatelessWidget {
 class _Timeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(32.w, 134.h),
-      painter: _TimelinePainter(),
-    );
+    return CustomPaint(size: Size(32.w, 134.h), painter: _TimelinePainter());
   }
 }
 
@@ -287,7 +281,7 @@ class _TimelinePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
-    
+
     final centerX = size.width * 0.5;
     final centerY = size.height * 0.1194;
     final checkPath = Path()
@@ -443,7 +437,7 @@ class _BottomSection extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Home Indicator
           Container(
             height: 34.h,
@@ -460,35 +454,6 @@ class _BottomSection extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Message Icon Button
-class _MessageButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AllColor.white,
-      borderRadius: BorderRadius.circular(14.r),
-      child: InkWell(
-        onTap: () {
-          // Handle message button tap
-        },
-        borderRadius: BorderRadius.circular(14.r),
-        child: Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFFDCDCDC)),
-            borderRadius: BorderRadius.circular(14.r),
-          ),
-          child: Icon(
-            Icons.message,
-            size: 24.sp,
-            color: const Color(0xFF141B34),
-          ),
-        ),
       ),
     );
   }

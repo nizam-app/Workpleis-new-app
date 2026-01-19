@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/service/message/screen/order_history_screen.dart';
 import 'package:workpleis/features/service/screen/service_jobs/submit_quote_screen.dart';
 
 /// Flutter conversion of `lib/features/service/screen/react.tsx`.
@@ -113,10 +114,18 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
             height: 56.h,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const SubmitQuoteScreen()),
-                );
+                if (isFromChat) {
+                  // Navigate to Order History when accepting offer from chat
+                  context.push(OrderHistoryScreen.routeName);
+                } else {
+                  // Navigate to Submit Quote when applying from jobs screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const SubmitQuoteScreen(),
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AllColor.black50,
