@@ -80,11 +80,10 @@ class _SendReportScreenState extends State<SendReportScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 24.h),
                     // Question
                     Text(
                       "Can you tell us what issue you're facing with this order?",
@@ -111,7 +110,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 80.h), // Increased bottom spacing for empty space
                   ],
                 ),
               ),

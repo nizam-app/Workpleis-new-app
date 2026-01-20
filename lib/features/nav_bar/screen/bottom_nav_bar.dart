@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
-import 'package:workpleis/features/client/project/screen/project_screen.dart';
 import 'package:workpleis/features/client/screen/client_home_screen.dart';
 import 'package:workpleis/features/client/Jobs/screen/jobs.dart';
 import 'package:workpleis/features/client/Jobs/model/flow_type.dart';
@@ -153,6 +152,17 @@ class _NavItem extends StatelessWidget {
                     color: isSelected ? AllColor.black : AllColor.grey,
                   ),
                 ),
+                if (isSelected) ...[
+                  SizedBox(height: 4.h),
+                  Container(
+                    width: 20.w,
+                    height: 2.h,
+                    decoration: BoxDecoration(
+                      color: AllColor.grey300,
+                      borderRadius: BorderRadius.circular(1.r),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
