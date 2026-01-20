@@ -55,14 +55,24 @@ import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 import '../features/client/Jobs/model/project_model.dart';
 import '../features/client/message/screen/messages_screen.dart';
 import '../features/client/profile/screen/profile_screen.dart';
+import '../features/client/profile/screen/account_information_screen.dart';
+import '../features/client/profile/screen/take_photo_screen.dart';
+import '../features/client/profile/screen/billing_payment_screen.dart';
+import '../features/client/profile/screen/payment_card_screen.dart';
+import '../features/client/profile/screen/card_scan_screen.dart';
+import '../features/client/profile/screen/order_management_screen.dart';
+import '../features/client/profile/screen/settings_screen.dart';
+import '../features/client/profile/screen/notification_settings_screen.dart';
+import '../features/client/profile/screen/support_chat_screen.dart';
 import '../features/client/project/screen/project_screen.dart';
 import '../features/notifications/screen/referral_screen.dart';
 import 'error_screen.dart';
 
 class AppRouter {
   // initial route
-  //static const String initial = ClientHomeScreen.routeName;
-  static final String initial = ServiceBottomNavBar.routeName;
+  static const String initial = SplashScreen.routeName;
+  //static final String initial = ServiceBottomNavBar.routeName;
+
   static final GoRouter appRouter = GoRouter(
     initialLocation: initial,
 
@@ -427,6 +437,51 @@ class AppRouter {
         path: ProfileScreen.routeName,
         name: ProfileScreen.routeName,
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: AccountInformationScreen.routeName,
+        name: AccountInformationScreen.routeName,
+        builder: (context, state) => const AccountInformationScreen(),
+      ),
+      GoRoute(
+        path: TakePhotoScreen.routeName,
+        name: TakePhotoScreen.routeName,
+        builder: (context, state) => const TakePhotoScreen(),
+      ),
+      GoRoute(
+        path: BillingPaymentScreen.routeName,
+        name: BillingPaymentScreen.routeName,
+        builder: (context, state) => const BillingPaymentScreen(),
+      ),
+      GoRoute(
+        path: PaymentCardScreen.routeName,
+        name: PaymentCardScreen.routeName,
+        builder: (context, state) => const PaymentCardScreen(),
+      ),
+      GoRoute(
+        path: CardScanScreen.routeName,
+        name: CardScanScreen.routeName,
+        builder: (context, state) => const CardScanScreen(),
+      ),
+      GoRoute(
+        path: OrderManagementScreen.routeName,
+        name: OrderManagementScreen.routeName,
+        builder: (context, state) => const OrderManagementScreen(),
+      ),
+      GoRoute(
+        path: SettingsScreen.routeName,
+        name: SettingsScreen.routeName,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: NotificationSettingsScreen.routeName,
+        name: NotificationSettingsScreen.routeName,
+        builder: (context, state) => const NotificationSettingsScreen(),
+      ),
+      GoRoute(
+        path: SupportChatScreen.routeName,
+        name: SupportChatScreen.routeName,
+        builder: (context, state) => const SupportChatScreen(),
       ),
     ],
   );

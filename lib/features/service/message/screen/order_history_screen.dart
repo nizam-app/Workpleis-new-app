@@ -47,68 +47,17 @@ class OrderHistoryScreen extends StatelessWidget {
             // Review Container with Timeline
             Positioned(left: 24.w, top: 183.h, child: _ReviewContainer()),
 
+            // Review Card
+            Positioned(
+              left: 24.w,
+              top: 632.h,
+              child: _ReviewCard(),
+            ),
+
             // Bottom Section (Button + Home Indicator)
             _BottomSection(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// Status Bar Component (iPhone style)
-class _StatusBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      height: 54.h,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Time
-          Padding(
-            padding: EdgeInsets.only(left: 0),
-            child: Text(
-              '9:41',
-              style: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w600,
-                color: AllColor.black,
-                fontFamily: 'SF Pro',
-              ),
-            ),
-          ),
-
-          // Levels (Battery, Wifi, Cellular)
-          Padding(
-            padding: EdgeInsets.only(right: 24.w),
-            child: Row(
-              children: [
-                // Cellular Connection Icon
-                Icon(
-                  Icons.signal_cellular_4_bar,
-                  size: 19.2.sp,
-                  color: AllColor.black,
-                ),
-                SizedBox(width: 6.w),
-
-                // Wifi Icon
-                Icon(Icons.wifi, size: 17.142.sp, color: AllColor.black),
-                SizedBox(width: 6.w),
-
-                // Battery Icon
-                Icon(
-                  Icons.battery_full,
-                  size: 25.sp,
-                  color: AllColor.black.withOpacity(0.4),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -395,6 +344,166 @@ class _DeliveryFrame extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Review Card Component
+class _ReviewCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 382.w,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: AllColor.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Overall Rating Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Overall rating',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AllColor.black,
+                  fontFamily: 'sf_pro',
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.star,
+                    size: 20.sp,
+                    color: Colors.amber,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '5.0',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                      color: AllColor.black,
+                      fontFamily: 'sf_pro',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+
+          // Chat Communication Rating
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  'Chat Communication',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AllColor.grey600,
+                    fontFamily: 'sf_pro',
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.star,
+                    size: 16.sp,
+                    color: Colors.amber,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '5.0',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AllColor.grey600,
+                      fontFamily: 'sf_pro',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+
+          // Hard Work Rating
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  'Hard Work',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AllColor.grey600,
+                    fontFamily: 'sf_pro',
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.star,
+                    size: 16.sp,
+                    color: Colors.amber,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '5.0',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AllColor.grey600,
+                      fontFamily: 'sf_pro',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24.h),
+
+          // Review Text
+          Text(
+            'Wow, what a fantastic experience! Your assistance in grasping my vision and translating it accurately was invaluable. Thank you so much! I\'ll definitely be returning for more!',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              color: AllColor.black,
+              fontFamily: 'sf_pro',
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
