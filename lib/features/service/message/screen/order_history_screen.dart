@@ -98,7 +98,7 @@ class _HeaderContainer extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Icon(
-                    Icons.arrow_back_ios_new,
+                    Icons.arrow_back,
                     size: 20.sp,
                     color: const Color(0xFF111111),
                   ),

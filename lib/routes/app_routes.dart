@@ -64,6 +64,9 @@ import '../features/client/profile/screen/order_management_screen.dart';
 import '../features/client/profile/screen/settings_screen.dart';
 import '../features/client/profile/screen/notification_settings_screen.dart';
 import '../features/client/profile/screen/support_chat_screen.dart';
+import '../features/client/profile/screen/two_step_verification_screen.dart';
+import '../features/client/profile/screen/change_password_screen.dart';
+import '../features/client/profile/screen/terms_conditions_screen.dart';
 import '../features/client/project/screen/project_screen.dart';
 import '../features/notifications/screen/referral_screen.dart';
 import 'error_screen.dart';
@@ -482,6 +485,21 @@ class AppRouter {
         path: SupportChatScreen.routeName,
         name: SupportChatScreen.routeName,
         builder: (context, state) => const SupportChatScreen(),
+      ),
+      GoRoute(
+        path: TwoStepVerificationScreen.routeName,
+        name: TwoStepVerificationScreen.routeName,
+        builder: (context, state) => const TwoStepVerificationScreen(),
+      ),
+      GoRoute(
+        path: ChangePasswordScreen.routeName,
+        name: ChangePasswordScreen.routeName,
+        builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: TermsConditionsScreen.routeName,
+        name: TermsConditionsScreen.routeName,
+        builder: (context, state) => const TermsConditionsScreen(),
       ),
     ],
   );

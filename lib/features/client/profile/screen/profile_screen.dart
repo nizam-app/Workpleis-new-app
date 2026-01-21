@@ -1,21 +1,152 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/auth/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'account_information_screen.dart';
 import 'billing_payment_screen.dart';
 import 'order_management_screen.dart';
 import 'settings_screen.dart';
+import 'terms_conditions_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   static const String routeName = '/profile';
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  void _showSignOutDialog() {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Sign Out',
+      barrierColor: Colors.transparent,
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Stack(
+          children: [
+            // Full screen blurred background
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(color: Colors.black.withOpacity(0.3)),
+              ),
+            ),
+            // Dialog content centered
+            Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 24.w),
+                decoration: BoxDecoration(
+                  color: AllColor.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Sign out button
+                    SizedBox(height: 20.h),
+                    GestureDetector(
+                      onTap: () async {
+                        // Clear all stored preferences
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.clear();
+
+                        // Close dialog
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+
+                        // Navigate to Login screen
+                        if (context.mounted) {
+                          context.go(LoginScreen.routeName);
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Sign out',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFFFF4D4D), // Red
+                              fontFamily: 'sf_pro',
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Separator line
+                    Container(
+                      height: 1,
+                      color: const Color(0xFFE0E0E0), // Light gray
+                    ),
+                    // Cancel button
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(12.r),
+                            bottomRight: Radius.circular(12.r),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AllColor.black,
+                              fontFamily: 'sf_pro',
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5), // Light grey/off-white background
+      backgroundColor: const Color(
+        0xFFF5F5F5,
+      ), // Light grey/off-white background
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -39,25 +170,16 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Handle logout
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Logout (coming soon)'),
-                          ),
-                        );
+                        _showSignOutDialog();
                       },
-                      child: Icon(
-                        Icons.logout,
-                        color: Colors.red,
-                        size: 24.sp,
-                      ),
+                      child: Icon(Icons.logout, color: Colors.red, size: 24.sp),
                     ),
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 24.h),
-              
+
               // Profile Banner with Green Background
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -78,10 +200,7 @@ class ProfileScreen extends StatelessWidget {
                             height: 64.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2,
-                              ),
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
                             child: ClipOval(
                               child: Image.asset(
@@ -124,9 +243,9 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      
+
                       SizedBox(width: 16.w),
-                      
+
                       // Name and Role
                       Expanded(
                         child: Column(
@@ -137,7 +256,9 @@ class ProfileScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
-                                color: const Color(0xFF1A1A1A), // Dark blue/black
+                                color: const Color(
+                                  0xFF1A1A1A,
+                                ), // Dark blue/black
                                 fontFamily: 'sf_pro',
                               ),
                             ),
@@ -154,7 +275,7 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      
+
                       // Rate Badge
                       Container(
                         padding: EdgeInsets.symmetric(
@@ -179,9 +300,9 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               SizedBox(height: 32.h),
-              
+
               // ACCOUNT Section
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -225,9 +346,9 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 32.h),
-              
+
               // CHANGE LANGUAGE Section
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -258,9 +379,9 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 32.h),
-              
+
               // SETTINGS Section
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -288,9 +409,9 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 32.h),
-              
+
               // Terms & Condition and Privacy Policy Links
               Center(
                 child: Row(
@@ -298,11 +419,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Terms & Condition (coming soon)'),
-                          ),
-                        );
+                        context.push(TermsConditionsScreen.routeName);
                       },
                       child: Text(
                         'Terms & Condition',
@@ -346,7 +463,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 40.h),
             ],
           ),
@@ -412,10 +529,7 @@ class _LanguageSelector extends StatelessWidget {
   final String language;
   final VoidCallback onTap;
 
-  const _LanguageSelector({
-    required this.language,
-    required this.onTap,
-  });
+  const _LanguageSelector({required this.language, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -436,11 +550,7 @@ class _LanguageSelector extends StatelessWidget {
                 color: const Color(0xFF2D5016), // Dark green
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.check,
-                size: 14.sp,
-                color: Colors.white,
-              ),
+              child: Icon(Icons.check, size: 14.sp, color: Colors.white),
             ),
             SizedBox(width: 16.w),
             Expanded(

@@ -57,7 +57,7 @@ class _NotificationSettingsScreenState
                         ),
                       ),
                       child: Icon(
-                        Icons.arrow_back_ios_new,
+                        Icons.arrow_back,
                         size: 18.sp,
                         color: AllColor.black,
                       ),
