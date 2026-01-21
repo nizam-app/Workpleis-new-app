@@ -54,6 +54,7 @@ import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 
 import '../features/client/Jobs/model/project_model.dart';
 import '../features/client/message/screen/messages_screen.dart';
+import '../features/client/message/screen/client_chat_screen.dart';
 import '../features/client/profile/screen/profile_screen.dart';
 import '../features/client/profile/screen/account_information_screen.dart';
 import '../features/client/profile/screen/take_photo_screen.dart';
@@ -393,6 +394,24 @@ class AppRouter {
               'assets/images/profile.png';
 
           return ChatScreen(
+            peerName: peerName,
+            isOnline: isOnline,
+            peerAvatarAsset: peerAvatarAsset,
+          );
+        },
+      ),
+      GoRoute(
+        path: ClientChatScreen.routeName,
+        name: ClientChatScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          final peerName = (extras?['peerName'] as String?) ?? 'Kazi Mahbub';
+          final isOnline = (extras?['isOnline'] as bool?) ?? true;
+          final peerAvatarAsset =
+              (extras?['peerAvatarAsset'] as String?) ??
+              'assets/images/profile.png';
+
+          return ClientChatScreen(
             peerName: peerName,
             isOnline: isOnline,
             peerAvatarAsset: peerAvatarAsset,
