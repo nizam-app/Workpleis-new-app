@@ -18,15 +18,15 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
 
   final List<_ChatMessage> _messages = [
     _ChatMessage(
+      text: 'Yes! I need additional support',
+      isUser: true,
+      timeLabel: '3.15 PM',
+    ),
+    _ChatMessage(
       text:
           'To receive additional assistance, Please explore the Tasker suport there you can view and complate learning paths to help jumpstart your success on Upwork. You may also find.',
       isUser: false,
       timeLabel: '3.10 PM',
-    ),
-    _ChatMessage(
-      text: 'Yes! I need additional support',
-      isUser: true,
-      timeLabel: '3.15 PM',
     ),
   ];
 
@@ -42,8 +42,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
     if (text.isEmpty) return;
 
     setState(() {
-      _messages.insert(
-        0,
+      _messages.add(
         _ChatMessage(text: text, isUser: true, timeLabel: 'Now'),
       );
     });
@@ -53,7 +52,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
-          0,
+          _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -115,7 +114,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                reverse: true,
+                reverse: false,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
@@ -207,7 +206,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                         child: Icon(
                           Icons.send,
                           size: 20.sp,
-                          color: AllColor.white,
+                          color: AllColor.black,
                         ),
                       ),
                     ),

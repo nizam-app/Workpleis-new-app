@@ -245,9 +245,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Text(
                       'Password is Storage',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFFA8FF3F), // Lime green
+                        color: const Color(0xFF5AE375), // Lime green
                         fontFamily: 'sf_pro',
                       ),
                     ),

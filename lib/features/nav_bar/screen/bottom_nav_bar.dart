@@ -33,7 +33,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
           const ClientHomeScreen(),
           ClientProjectsScreen(flowType: FlowType.job), // Jobs tab
           ClientProjectsScreen(flowType: FlowType.project), // Project tab - same flow, different terminology
-          const MessageScreen(),
+          const MessageScreen(isClient: true),
           const ProfileScreen(),
         ],
       ),

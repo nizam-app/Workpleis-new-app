@@ -6,11 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
 import 'package:workpleis/features/service/message/screen/chat_screen.dart';
+import 'package:workpleis/features/client/message/screen/client_chat_screen.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key});
+  const MessageScreen({super.key, this.isClient = false});
 
   static const String routeName = '/message';
+  
+  final bool isClient;
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -157,13 +160,23 @@ class _MessageScreenState extends State<MessageScreen> {
                             return _ConversationTile(
                               conversation: conversation,
                               onTap: () {
-                                context.push(
-                                  ChatScreen.routeName,
-                                  extra: <String, dynamic>{
-                                    'peerName': conversation.name,
-                                    'isOnline': true,
-                                  },
-                                );
+                                if (widget.isClient) {
+                                  context.push(
+                                    ClientChatScreen.routeName,
+                                    extra: <String, dynamic>{
+                                      'peerName': conversation.name,
+                                      'isOnline': true,
+                                    },
+                                  );
+                                } else {
+                                  context.push(
+                                    ChatScreen.routeName,
+                                    extra: <String, dynamic>{
+                                      'peerName': conversation.name,
+                                      'isOnline': true,
+                                    },
+                                  );
+                                }
                               },
                             );
                           },
