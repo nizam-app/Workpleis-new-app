@@ -298,9 +298,20 @@ class _QuoteJobCard extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // CircleAvatar(
+            //   radius: 20.r,
+            //   backgroundColor: const Color(0xFFE6E7EB),
+            //   child: Icon(
+            //     Icons.person,
+            //     size: 20.sp,
+            //     color: const Color(0xFF7D7D7D),
+            //   ),
+            // ),
             CircleAvatar(
               radius: 20.r,
               backgroundColor: const Color(0xFFE6E7EB),
+              backgroundImage: const AssetImage('assets/images/dianne.png'),
+              onBackgroundImageError: (_, __) {},
               child: Icon(
                 Icons.person,
                 size: 20.sp,

@@ -76,7 +76,7 @@ class _Header extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
+                    Icons.arrow_back,
                     size: 20.sp,
                     color: const Color(0xFF111111),
                   ),
