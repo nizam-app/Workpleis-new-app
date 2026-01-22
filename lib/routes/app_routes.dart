@@ -49,6 +49,8 @@ import 'package:workpleis/features/service/screen/set_up_withdrawals_screen.dart
 import 'package:workpleis/features/service/screen/service_jobs/service_job_full_details_screen.dart';
 import 'package:workpleis/features/service/message/screen/chat_screen.dart';
 import 'package:workpleis/features/service/message/screen/order_history_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/order_management_screen.dart';
+import 'package:workpleis/features/service/screen/service_jobs/mark_completed_screen.dart';
 // Splash
 import 'package:workpleis/features/spalashScreen/screen/splashScreen.dart';
 
@@ -452,6 +454,34 @@ class AppRouter {
         path: OrderHistoryScreen.routeName,
         name: OrderHistoryScreen.routeName,
         builder: (context, state) => const OrderHistoryScreen(),
+      ),
+      GoRoute(
+        path: ServiceOrderManagementScreen.routeName,
+        name: ServiceOrderManagementScreen.routeName,
+        builder: (context, state) => const ServiceOrderManagementScreen(),
+      ),
+      GoRoute(
+        path: MarkCompletedScreen.routeName,
+        name: MarkCompletedScreen.routeName,
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+          return MarkCompletedScreen(
+            peerName: (extras?['peerName'] as String?) ?? 'Kazi Mahbub',
+            isOnline: (extras?['isOnline'] as bool?) ?? true,
+            peerAvatarAsset:
+                (extras?['peerAvatarAsset'] as String?) ??
+                'assets/images/profile.png',
+            title: (extras?['title'] as String?) ??
+                'I have two tickets for the Al-Nassr  Paris match for sale design',
+            quote: (extras?['quote'] as String?) ?? '8 Sec',
+            price: (extras?['price'] as String?) ?? r'$600',
+            location: (extras?['location'] as String?) ?? 'Jaddah',
+            categories: (extras?['categories'] as List<dynamic>?)
+                    ?.map((e) => e.toString())
+                    .toList() ??
+                const ['Design', 'Banner Design'],
+          );
+        },
       ),
 
       // 🔹 Profile

@@ -306,7 +306,7 @@ class _ChatHeader extends StatelessWidget {
     return Row(
       children: [
         _HeaderIconButton(
-          icon: Icons.arrow_back_ios_new,
+          icon: Icons.arrow_back,
           onTap: onBack,
           borderColor: const Color(0xFFE0E0E0),
           borderRadius: 8.r,

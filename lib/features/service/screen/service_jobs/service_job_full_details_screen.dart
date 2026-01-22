@@ -26,6 +26,7 @@ class ServiceJobFullDetailsScreen extends StatelessWidget {
 
   static const String routeName = '/service_job_full_details';
 
+
   final String title;
   final String quote;
   final String price;
@@ -384,6 +385,7 @@ class _InfoCard extends StatelessWidget {
 class _CategoryChip extends StatelessWidget {
   final String label;
 
+
   const _CategoryChip({required this.label});
 
   @override
@@ -411,6 +413,7 @@ class _CategoryChip extends StatelessWidget {
 
 class _JobDescription extends StatelessWidget {
   const _JobDescription();
+
 
   @override
   Widget build(BuildContext context) {

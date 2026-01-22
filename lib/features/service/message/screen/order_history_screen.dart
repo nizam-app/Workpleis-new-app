@@ -526,7 +526,8 @@ class _BottomSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(99.r),
               child: InkWell(
                 onTap: () {
-                  // Handle button tap
+                  // Navigate to Order Management screen
+                  context.push('/service-order-management');
                 },
                 borderRadius: BorderRadius.circular(99.r),
                 child: Container(
