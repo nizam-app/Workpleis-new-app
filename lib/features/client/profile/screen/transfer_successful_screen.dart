@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'profile_screen.dart';
 
 class TransferSuccessfulScreen extends StatefulWidget {
   const TransferSuccessfulScreen({super.key});
@@ -33,7 +34,8 @@ class _TransferSuccessfulScreenState extends State<TransferSuccessfulScreen> {
                       height: 40.w,
                       decoration: BoxDecoration(
                         color: AllColor.white,
-                        shape: BoxShape.circle,
+                       borderRadius: BorderRadius.circular(10),
+                       // shape: BoxShape.circle,
                         border: Border.all(
                           color: const Color(0xFFE0E0E0),
                           width: 1,
@@ -57,19 +59,19 @@ class _TransferSuccessfulScreenState extends State<TransferSuccessfulScreen> {
                 children: [
                   // Success Illustration
                   Container(
-                    width: 200.w,
-                    height: 200.w,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF76C11F), // Bright green
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
+                    width: 300.w,
+                   // height: 500.w,
+                    // decoration: BoxDecoration(
+                    //  color: const Color(0xFF76C11F), // Bright green
+                    //   borderRadius: BorderRadius.circular(30.r),
+                    // ),
                     child: Image.asset(
                       'assets/images/payment.png',
                     ),
 
                   ),
 
-                  SizedBox(height: 40.h),
+                   SizedBox(height: 20.h),
 
                   // Headline Text
                   Text(
@@ -116,8 +118,8 @@ class _TransferSuccessfulScreenState extends State<TransferSuccessfulScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate back or to home
-                          context.pop();
+                          // Navigate to ProfileScreen
+                          context.go(ProfileScreen.routeName);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AllColor.black,

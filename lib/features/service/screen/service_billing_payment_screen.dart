@@ -1,7 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'package:workpleis/features/client/profile/screen/payment_card_screen.dart';
+import '../../client/profile/screen/card_scan_screen.dart';
 
 class ServiceBillingPaymentScreen extends StatefulWidget {
   const ServiceBillingPaymentScreen({super.key});
@@ -15,6 +18,9 @@ class ServiceBillingPaymentScreen extends StatefulWidget {
 
 class _ServiceBillingPaymentScreenState
     extends State<ServiceBillingPaymentScreen> {
+  bool _showAddCard = false;
+  bool _showVerifyDialog = false;
+
   final List<_EarningEntry> _earnings = [
     _EarningEntry(date: 'Jul 30, 2024', amount: '50 SAR'),
     _EarningEntry(date: 'Jul 10, 2024', amount: '100 SAR'),
@@ -25,19 +31,40 @@ class _ServiceBillingPaymentScreenState
   ];
 
   void _handlePayNow() {
-    // Navigate to payment screen or show payment dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Pay Now functionality (coming soon)')),
-    );
+    // First click: Show "+ Add Card" button
+    setState(() {
+      _showAddCard = true;
+    });
+  }
+
+  void _handleAddCard() {
+    // Second click: Show "Verify by SMS" dialog
+    setState(() {
+      _showVerifyDialog = true;
+    });
+  }
+
+  void _hideVerifyDialog() {
+    setState(() {
+      _showVerifyDialog = false;
+    });
+  }
+
+  void _handleVerifyBySMS() {
+    // Close the dialog and navigate to CardScanScreen
+    _hideVerifyDialog();
+    context.push(PaymentCardScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AllColor.white,
-      body: SafeArea(
-        child: Column(
-          children: [
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
             // App Bar
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
@@ -110,17 +137,17 @@ class _ServiceBillingPaymentScreenState
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Stack(
-                        clipBehavior: Clip.none,
+                       // clipBehavior: Clip.none,
                         children: [
-                          // Decorative darker green shape in top-right
+
                           Positioned(
-                            top: -30.h,
-                            right: -40.w,
+                            top: -40.h,
+                            right: -60.w,
                             child: Container(
                               width: 120.w,
-                              height: 120.w,
+                              height: 160.w,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF5FA015), // Darker green
+                                color: const Color(0xFF6B9600), // Lighter green
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -151,9 +178,9 @@ class _ServiceBillingPaymentScreenState
                                   ),
                                 ),
                                 SizedBox(height: 24.h),
-                                // Pay Now Button
+                                // Pay Now / Add Card Button
                                 GestureDetector(
-                                  onTap: _handlePayNow,
+                                  onTap: _showAddCard ? _handleAddCard : _handlePayNow,
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 16.w,
@@ -163,14 +190,27 @@ class _ServiceBillingPaymentScreenState
                                       color: const Color(0xFFF0F0F0), // Light grey/off-white
                                       borderRadius: BorderRadius.circular(10.r),
                                     ),
-                                    child: Text(
-                                      'Pay Now',
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: AllColor.black,
-                                        fontFamily: 'sf_pro',
-                                      ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (_showAddCard) ...[
+                                          Icon(
+                                            Icons.add,
+                                            size: 18.sp,
+                                            color: AllColor.black,
+                                          ),
+                                          SizedBox(width: 4.w),
+                                        ],
+                                        Text(
+                                          _showAddCard ? 'Add Card' : 'Pay Now',
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: AllColor.black,
+                                            fontFamily: 'sf_pro',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -300,6 +340,167 @@ class _ServiceBillingPaymentScreenState
           ],
         ),
       ),
+          // Verify by SMS Dialog
+          if (_showVerifyDialog)
+            _VerifyBySMSDialog(
+              onClose: _hideVerifyDialog,
+              onVerify: _handleVerifyBySMS,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _VerifyBySMSDialog extends StatelessWidget {
+  final VoidCallback onClose;
+  final VoidCallback onVerify;
+
+  const _VerifyBySMSDialog({
+    required this.onClose,
+    required this.onVerify,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Blurred background
+        Positioned.fill(
+          child: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: GestureDetector(
+                onTap: onClose,
+                child: Container(
+                  color: Colors.black.withOpacity(0.3),
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Dialog content
+        Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 24.w),
+            decoration: BoxDecoration(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(20.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header with title and close button
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 20.h, 16.w, 16.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Let's Verify",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AllColor.black,
+                          fontFamily: 'sf_pro',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: onClose,
+                        child: Container(
+                          width: 24.w,
+                          height: 24.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.transparent,
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            size: 20.sp,
+                            color: AllColor.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Content text area
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F5), // Light grey background
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Stack(
+                      children: [
+                        Text(
+                          'You are attempting to add a payout method. Please select a verification method to confirm your identity.',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF666666), // Dark grey text
+                            fontFamily: 'sf_pro',
+                            height: 1.5,
+                          ),
+                        ),
+                        // Decorative corner icon (resize handle)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Icon(
+                            Icons.drag_handle,
+                            size: 16.sp,
+                            color: const Color(0xFFCCCCCC),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                // Verify by SMS Button
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: onVerify,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AllColor.black,
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        'Verify by SMS',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AllColor.white,
+                          fontFamily: 'sf_pro',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
