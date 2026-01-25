@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:workpleis/core/constants/color_control/all_color.dart';
+import 'transfer_successful_screen.dart';
 
 class CardScanScreen extends StatefulWidget {
   const CardScanScreen({super.key});
@@ -14,12 +15,8 @@ class CardScanScreen extends StatefulWidget {
 
 class _CardScanScreenState extends State<CardScanScreen> {
   void _handleConfirm() {
-    // return scanned card data
-    context.pop({
-      'cardNumber': '5412 7512 3412 3456',
-      'expiryDate': '12/23',
-      'cardholderName': 'Lee M. Cardholder',
-    });
+    // Navigate to Transfer Successful screen
+    context.push(TransferSuccessfulScreen.routeName);
   }
 
   @override

@@ -78,7 +78,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                       width: 40.w,
                       height: 40.w,
                       decoration: BoxDecoration(
-                        color: AllColor.grey100,
+                        color: AllColor.white,
                         borderRadius: BorderRadius.circular(8.r),
                         border: Border.all(
                           color: const Color(0xFFE0E0E0),
@@ -95,7 +95,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        'Support Chat',
+                        'Tasker Support Chat',
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
@@ -106,6 +106,64 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                     ),
                   ),
                   SizedBox(width: 40.w), // Balance the back button
+                ],
+              ),
+            ),
+
+            // WORKPEER SUPPORT Banner
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+              decoration: const BoxDecoration(
+                color: Color(0xFF1E1E1E), // Dark grey/black
+              ),
+              child: Row(
+                children: [
+                  // Support Icon (handshake/butterfly icon placeholder)
+                  Container(
+                    width: 32.w,
+                    height: 32.w,
+                    decoration: BoxDecoration(
+                      color: AllColor.white,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Icon(
+                      Icons.support_agent,
+                      size: 20.sp,
+                      color: const Color(0xFF76C11F), // Bright green
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      'WORKPEER SUPPORT',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AllColor.white,
+                        fontFamily: 'sf_pro',
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Refresh action
+                    },
+                    child: Container(
+                      width: 32.w,
+                      height: 32.w,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.refresh,
+                        size: 20.sp,
+                        color: AllColor.white,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -141,7 +199,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
               decoration: BoxDecoration(
                 color: AllColor.white,
                 border: Border(
-                  top: BorderSide(color: AllColor.grey200, width: 1),
+                  top: BorderSide(color: const Color(0xFFE0E0E0), width: 1),
                 ),
               ),
               child: SafeArea(
@@ -154,8 +212,12 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                       child: Container(
                         constraints: BoxConstraints(maxHeight: 100.h),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF2F2F2),
+                          color: const Color(0xFFF5F5F5), // Very light grey
                           borderRadius: BorderRadius.circular(24.r),
+                          border: Border.all(
+                            color: const Color(0xFFE0E0E0).withOpacity(0.3),
+                            width: 1,
+                          ),
                         ),
                         child: TextField(
                           controller: _messageController,
@@ -166,7 +228,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                             hintStyle: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
-                              color: AllColor.grey600,
+                              color: const Color(0xFFAAAAAA), // Medium grey
                               fontFamily: 'sf_pro',
                             ),
                             border: InputBorder.none,
@@ -179,7 +241,7 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                               child: Icon(
                                 Icons.attach_file,
                                 size: 20.sp,
-                                color: AllColor.grey600,
+                                color: const Color(0xFF696969), // Dark grey
                               ),
                             ),
                           ),
@@ -200,13 +262,13 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
                         width: 48.w,
                         height: 48.w,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFCAFF45), // Lime green
+                          color: const Color(0xFF76C11F), // Bright green
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           Icons.send,
                           size: 20.sp,
-                          color: AllColor.black,
+                          color: AllColor.white,
                         ),
                       ),
                     ),
@@ -233,7 +295,7 @@ class _ChatMessage {
   });
 }
 
-// User Message Bubble (Right-aligned, Lime Green)
+// User Message Bubble (Right-aligned, Bright Green with White Text)
 class _UserMessageBubble extends StatelessWidget {
   final String text;
   final String timeLabel;
@@ -259,15 +321,20 @@ class _UserMessageBubble extends StatelessWidget {
                       vertical: 12.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFCAFF45), // Lime green
-                      borderRadius: BorderRadius.circular(16.r),
+                      color: const Color(0xFF76C11F), // Bright green
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r),
+                        topRight: Radius.circular(16.r),
+                        bottomLeft: Radius.circular(16.r),
+                        bottomRight: Radius.circular(4.r),
+                      ),
                     ),
                     child: Text(
                       text,
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFF1A1A1A), // Black
+                        color: AllColor.white, // White text
                         fontFamily: 'sf_pro',
                         height: 1.4,
                       ),
@@ -280,7 +347,7 @@ class _UserMessageBubble extends StatelessWidget {
                     child: CustomPaint(
                       size: Size(12.w, 12.h),
                       painter: _MessageTailPainter(
-                        color: const Color(0xFFCAFF45),
+                        color: const Color(0xFF76C11F),
                         isRight: true,
                       ),
                     ),
@@ -298,7 +365,7 @@ class _UserMessageBubble extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
-              color: AllColor.grey600,
+              color: const Color(0xFFAAAAAA), // Medium grey
               fontFamily: 'sf_pro',
             ),
           ),
@@ -308,7 +375,7 @@ class _UserMessageBubble extends StatelessWidget {
   }
 }
 
-// Support Message Bubble (Left-aligned, Light Grey)
+// Support Message Bubble (Left-aligned, Light Grey with Black Text)
 class _SupportMessageBubble extends StatelessWidget {
   final String text;
   final String timeLabel;
@@ -323,18 +390,22 @@ class _SupportMessageBubble extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Support Profile Icon
+            // Support Profile Icon (Circular with icon)
             Container(
               width: 32.w,
               height: 32.w,
               decoration: BoxDecoration(
-                color: const Color(0xFFCAFF45), // Light green
-                borderRadius: BorderRadius.circular(8.r),
+                color: AllColor.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color(0xFFE0E0E0),
+                  width: 1,
+                ),
               ),
               child: Icon(
                 Icons.support_agent,
                 size: 18.sp,
-                color: AllColor.white,
+                color: const Color(0xFF76C11F), // Bright green icon
               ),
             ),
             SizedBox(width: 8.w),
@@ -348,15 +419,20 @@ class _SupportMessageBubble extends StatelessWidget {
                       vertical: 12.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF2F2F2), // Very light grey
-                      borderRadius: BorderRadius.circular(16.r),
+                      color: const Color(0xFFF0F0F0), // Light grey
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(4.r),
+                        topRight: Radius.circular(16.r),
+                        bottomRight: Radius.circular(16.r),
+                        bottomLeft: Radius.circular(16.r),
+                      ),
                     ),
                     child: Text(
                       text,
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFF1A1A1A), // Black
+                        color: AllColor.black, // Black text
                         fontFamily: 'sf_pro',
                         height: 1.4,
                       ),
@@ -369,7 +445,7 @@ class _SupportMessageBubble extends StatelessWidget {
                     child: CustomPaint(
                       size: Size(12.w, 12.h),
                       painter: _MessageTailPainter(
-                        color: const Color(0xFFF2F2F2),
+                        color: const Color(0xFFF0F0F0),
                         isRight: false,
                       ),
                     ),
@@ -387,7 +463,7 @@ class _SupportMessageBubble extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
-              color: AllColor.grey600,
+              color: const Color(0xFFAAAAAA), // Medium grey
               fontFamily: 'sf_pro',
             ),
           ),

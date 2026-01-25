@@ -10,6 +10,7 @@ import 'billing_payment_screen.dart';
 import 'order_management_screen.dart';
 import 'settings_screen.dart';
 import 'terms_conditions_screen.dart';
+import 'package:workpleis/features/service/screen/service_billing_payment_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -332,7 +333,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: Icons.credit_card_outlined,
                       title: 'Billing Payment',
                       onTap: () {
-                        context.push(BillingPaymentScreen.routeName);
+                        // Check if we're in service provider context
+                        final state = GoRouterState.of(context);
+                        final location = state.uri.toString();
+                        final matchedLocation = state.matchedLocation;
+                        final isServiceProvider = location.contains('ServiceBottomNavBar') ||
+                            matchedLocation.contains('ServiceBottomNavBar') ||
+                            location.contains('/service-') ||
+                            matchedLocation.contains('/service-');
+                        
+                        if (isServiceProvider) {
+                          context.push(ServiceBillingPaymentScreen.routeName);
+                        } else {
+                          context.push(BillingPaymentScreen.routeName);
+                        }
                       },
                     ),
                     SizedBox(height: 12.h),

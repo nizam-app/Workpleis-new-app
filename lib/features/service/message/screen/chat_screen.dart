@@ -27,6 +27,11 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _composerController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _blockReasonController = TextEditingController();
+
+  bool _showBlockUserDialog = false;
+  bool _showBlockConfirmationDialog = false;
+  bool _isUserBlocked = false;
 
   late final List<_ChatMessage> _messages = <_ChatMessage>[
     _ChatMessage.receivedText(
@@ -60,7 +65,50 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _composerController.dispose();
     _scrollController.dispose();
+    _blockReasonController.dispose();
     super.dispose();
+  }
+
+  void _openBlockUserDialog() {
+    setState(() {
+      _showBlockUserDialog = true;
+    });
+  }
+
+  void _hideBlockUserDialog() {
+    setState(() {
+      _showBlockUserDialog = false;
+      _blockReasonController.clear();
+    });
+  }
+
+  void _sendBlockRequest() {
+    setState(() {
+      _showBlockUserDialog = false;
+      _showBlockConfirmationDialog = true;
+    });
+  }
+
+  void _hideBlockConfirmationDialog() {
+    setState(() {
+      _showBlockConfirmationDialog = false;
+    });
+  }
+
+  void _confirmBlockUser() {
+    final reason = _blockReasonController.text.trim();
+    setState(() {
+      _isUserBlocked = true;
+      _showBlockConfirmationDialog = false;
+      _blockReasonController.clear();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('User blocked${reason.isNotEmpty ? ': $reason' : ''}'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   void _scrollToBottom() {
@@ -74,6 +122,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _sendMessage() {
+    if (_isUserBlocked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You cannot send messages to a blocked user'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     final text = _composerController.text.trim();
     if (text.isEmpty) return;
 
@@ -112,13 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       isOnline: widget.isOnline,
                       avatarAsset: widget.peerAvatarAsset,
                       onBack: () => context.pop(),
-                      onMenu: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('More options (coming soon)'),
-                          ),
-                        );
-                      },
+                      onBlockUser: _openBlockUserDialog,
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -187,6 +239,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   _ChatComposer(
                     controller: _composerController,
+                    isBlocked: _isUserBlocked,
                     onAttach: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -200,6 +253,23 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
+          // Block User Dialog
+          if (_showBlockUserDialog)
+            Positioned.fill(
+              child: _BlockUserDialog(
+                controller: _blockReasonController,
+                onClose: _hideBlockUserDialog,
+                onSend: _sendBlockRequest,
+              ),
+            ),
+          // Block Confirmation Dialog
+          if (_showBlockConfirmationDialog)
+            Positioned.fill(
+              child: _BlockConfirmationDialog(
+                onClose: _hideBlockConfirmationDialog,
+                onConfirm: _confirmBlockUser,
+              ),
+            ),
         ],
       ),
     );
@@ -292,14 +362,14 @@ class _ChatHeader extends StatelessWidget {
     required this.isOnline,
     required this.avatarAsset,
     required this.onBack,
-    required this.onMenu,
+    required this.onBlockUser,
   });
 
   final String peerName;
   final bool isOnline;
   final String avatarAsset;
   final VoidCallback onBack;
-  final VoidCallback onMenu;
+  final VoidCallback onBlockUser;
 
   @override
   Widget build(BuildContext context) {
@@ -343,12 +413,49 @@ class _ChatHeader extends StatelessWidget {
             ],
           ),
         ),
-        _HeaderIconButton(
-          icon: Icons.more_vert,
-          onTap: onMenu,
-          borderColor: const Color(0xFFDCDCDC),
-          borderRadius: 14.r,
-          fillColor: AllColor.white,
+        PopupMenuButton<String>(
+          color: AllColor.white,
+          elevation: 8,
+          offset: Offset(0, 52.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          onSelected: (value) {
+            if (value == 'block') {
+              onBlockUser();
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem<String>(
+              value: 'block',
+              child: SizedBox(
+                width: 90.w,
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'Block User',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFFFF0000),
+                    fontFamily: 'sf_pro',
+                  ),
+                ),
+              ),
+            ),
+          ],
+          child: Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(14.r),
+              border: Border.all(color: const Color(0xFFDCDCDC)),
+            ),
+            child: Icon(
+              Icons.more_vert,
+              size: 20.sp,
+              color: const Color(0xFF111111),
+            ),
+          ),
         ),
       ],
     );
@@ -589,11 +696,13 @@ class _ChatComposer extends StatelessWidget {
     required this.controller,
     required this.onAttach,
     required this.onSend,
+    this.isBlocked = false,
   });
 
   final TextEditingController controller;
   final VoidCallback onAttach;
   final VoidCallback onSend;
+  final bool isBlocked;
 
   @override
   Widget build(BuildContext context) {
@@ -620,13 +729,16 @@ class _ChatComposer extends StatelessWidget {
                     Expanded(
                       child: TextField(
                         controller: controller,
+                        enabled: !isBlocked,
                         textInputAction: TextInputAction.send,
                         onSubmitted: (_) => onSend(),
                         style: TextStyle(
                           fontFamily: 'sf_pro',
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
-                          color: AllColor.black,
+                          color: isBlocked
+                              ? const Color(0xFFB0B0B0)
+                              : AllColor.black,
                         ),
                         decoration: InputDecoration(
                           hintText: 'Type here...',
@@ -641,11 +753,13 @@ class _ChatComposer extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: onAttach,
+                      onPressed: isBlocked ? null : onAttach,
                       icon: Icon(
                         Icons.attach_file,
                         size: 22.sp,
-                        color: const Color(0xFF756D6D),
+                        color: isBlocked
+                            ? const Color(0xFFB0B0B0)
+                            : const Color(0xFF756D6D),
                       ),
                     ),
                   ],
@@ -657,12 +771,18 @@ class _ChatComposer extends StatelessWidget {
               width: 56.w,
               height: 56.w,
               child: Material(
-                color: AllColor.black,
+                color: isBlocked ? const Color(0xFFCCCCCC) : AllColor.black,
                 shape: const CircleBorder(),
                 child: InkWell(
                   customBorder: const CircleBorder(),
-                  onTap: onSend,
-                  child: Icon(Icons.send, color: AllColor.white, size: 22.sp),
+                  onTap: isBlocked ? null : onSend,
+                  child: Icon(
+                    Icons.send,
+                    color: isBlocked
+                        ? const Color(0xFF999999)
+                        : AllColor.white,
+                    size: 22.sp,
+                  ),
                 ),
               ),
             ),
@@ -862,6 +982,289 @@ class _PillButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// Block User Dialog
+class _BlockUserDialog extends StatelessWidget {
+  final TextEditingController controller;
+  final VoidCallback onClose;
+  final VoidCallback onSend;
+
+  const _BlockUserDialog({
+    required this.controller,
+    required this.onClose,
+    required this.onSend,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Blurred background overlay
+        Positioned.fill(
+          child: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: GestureDetector(
+                onTap: onClose,
+                child: Container(color: Colors.black.withOpacity(0.3)),
+              ),
+            ),
+          ),
+        ),
+        // Dialog content
+        Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 24.w),
+            decoration: BoxDecoration(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header with Close Button
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Block User',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AllColor.black,
+                          fontFamily: 'sf_pro',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: onClose,
+                        child: Container(
+                          width: 32.w,
+                          height: 32.w,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFE0E0E0),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            size: 18.sp,
+                            color: AllColor.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Text Input Area
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: 120.h,
+                      maxHeight: 200.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF2F2F2),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    padding: EdgeInsets.all(16.w),
+                    child: TextField(
+                      controller: controller,
+                      maxLines: null,
+                      minLines: 4,
+                      textInputAction: TextInputAction.newline,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        hintText:
+                            'This is client spam. The Tasker app is looking quite bad.',
+                        hintStyle: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AllColor.grey600,
+                          fontFamily: 'sf_pro',
+                        ),
+                        border: InputBorder.none,
+                        isDense: true,
+                      ),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AllColor.black,
+                        fontFamily: 'sf_pro',
+                      ),
+                    ),
+                  ),
+                ),
+                // Sent Button
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                  child: GestureDetector(
+                    onTap: onSend,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      decoration: BoxDecoration(
+                        color: AllColor.black,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Sent',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AllColor.white,
+                            fontFamily: 'sf_pro',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Block Confirmation Dialog (Second Popup)
+class _BlockConfirmationDialog extends StatelessWidget {
+  final VoidCallback onClose;
+  final VoidCallback onConfirm;
+
+  const _BlockConfirmationDialog({
+    required this.onClose,
+    required this.onConfirm,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Blurred background overlay
+        Positioned.fill(
+          child: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: GestureDetector(
+                onTap: onClose,
+                child: Container(color: Colors.black.withOpacity(0.3)),
+              ),
+            ),
+          ),
+        ),
+        // Dialog content
+        Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 24.w),
+            decoration: BoxDecoration(
+              color: AllColor.white,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header with Close Button
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Block User',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AllColor.black,
+                          fontFamily: 'sf_pro',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: onClose,
+                        child: Container(
+                          width: 32.w,
+                          height: 32.w,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFE0E0E0),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            size: 18.sp,
+                            color: AllColor.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Message Text
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                  child: Text(
+                    'User will be blocked.',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AllColor.black,
+                      fontFamily: 'sf_pro',
+                    ),
+                  ),
+                ),
+                // Confirm Button
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                  child: GestureDetector(
+                    onTap: onConfirm,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      decoration: BoxDecoration(
+                        color: AllColor.black,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AllColor.white,
+                            fontFamily: 'sf_pro',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

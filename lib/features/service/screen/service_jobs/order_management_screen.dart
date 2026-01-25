@@ -157,7 +157,9 @@ class _ServiceOrderManagementScreenState
                   // Order History Tab
                   Expanded(
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
+                        setState(() => _selectedTabIndex = 0);
                         _tabController.animateTo(0);
                       },
                       child: Column(
@@ -194,7 +196,9 @@ class _ServiceOrderManagementScreenState
                   // Transaction Tab
                   Expanded(
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
+                        setState(() => _selectedTabIndex = 1);
                         _tabController.animateTo(1);
                       },
                       child: Column(

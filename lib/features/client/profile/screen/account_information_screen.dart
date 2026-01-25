@@ -24,9 +24,24 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
       TextEditingController(text: '+966');
   final TextEditingController _phoneNumberController =
       TextEditingController(text: '75476-013');
+  final TextEditingController _aboutMeController = TextEditingController(
+    text:
+        'Intuitive Consumer Experience and Digital Transformation Agency.\nSchedule a call in Calendly or email us at sadax.studio@gmail.com\n\nCapabilities:\n• Discovery Sessions (UX Research)\n• Desk Research\n• Market Research\n• Discovery Mapping\n• User Interviews\n• Usability Testing\n\nUX/UI\n• Websites\n• Web Apps\n• Mobile Apps',
+  );
 
   bool _isOnlineStatusEnabled = true;
   File? _profileImage;
+
+  final List<String> _skills = [
+    'Assembly',
+    'Mounting',
+    'Moving',
+    'Cleaning',
+    'Outdoor Help',
+    'Home Rrepairs',
+    'Painting',
+    'Trending',
+  ];
 
   @override
   void dispose() {
@@ -34,6 +49,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
     _lastNameController.dispose();
     _countryCodeController.dispose();
     _phoneNumberController.dispose();
+    _aboutMeController.dispose();
     super.dispose();
   }
 
@@ -56,6 +72,15 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
     context.pop();
   }
 
+  void _handleEditBio(String section) {
+    // Handle edit bio logic here
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Edit $section (coming soon)'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,10 +99,9 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                       width: 40.w,
                       height: 40.w,
                       decoration: BoxDecoration(
-                        color: AllColor.grey100,
                         borderRadius: BorderRadius.circular(10.r),
                         border: Border.all(
-                          color: AllColor.grey300,
+                          color: const Color(0xFFE0E0E0),
                           width: 1,
                         ),
                       ),
@@ -115,8 +139,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                     SizedBox(height: 32.h),
 
                     // Profile Picture Section
-                    GestureDetector(
-                      onTap: _pickProfileImage,
+                    Center(
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -125,10 +148,10 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                             height: 120.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              // border: Border.all(
-                              //   color: const Color(0xFFA8FF3F), // Lime green
-                              //   width: 4,
-                              // ),
+                              border: Border.all(
+                                color: AllColor.bgcolor, // Lime green #CAFF45
+                                width: 4,
+                              ),
                             ),
                             child: ClipOval(
                               child: _profileImage != null
@@ -141,11 +164,11 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                                       fit: BoxFit.cover,
                                       errorBuilder: (context, error, stackTrace) {
                                         return Container(
-                                          color: const Color(0xFFA8FF3F),
+                                          color: const Color(0xFFE0E0E0),
                                           child: Icon(
                                             Icons.person,
                                             size: 60.sp,
-                                            color: AllColor.white,
+                                            color: AllColor.grey600,
                                           ),
                                         );
                                       },
@@ -156,21 +179,24 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                           Positioned(
                             bottom: 0,
                             right: 0,
-                            child: Container(
-                              width: 36.w,
-                              height: 36.w,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFA8FF3F), // Lime green
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AllColor.white,
-                                  width: 2,
+                            child: GestureDetector(
+                              onTap: _pickProfileImage,
+                              child: Container(
+                                width: 36.w,
+                                height: 36.w,
+                                decoration: BoxDecoration(
+                                  color: AllColor.switchcolor, // Lime green
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AllColor.white,
+                                    width: 2,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.edit,
-                                size: 18.sp,
-                                color: AllColor.white,
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 18.sp,
+                                  color: AllColor.white,
+                                ),
                               ),
                             ),
                           ),
@@ -189,24 +215,10 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                       ),
                       child: Row(
                         children: [
-                          // Online Status Icon
-                          Container(
-                            width: 40.w,
-                            height: 40.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AllColor.black, // Lime green
-                                width: 2,
-                              ),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.all(6.w),
-                              decoration: BoxDecoration(
-                                color: AllColor.black, // Lime green
-                                shape: BoxShape.circle,
-                              ),
-                            ),
+                          // Online Status Icon (Target/Bullseye)
+                          CustomPaint(
+                            size: Size(40.w, 40.w),
+                            painter: _TargetIconPainter(),
                           ),
                           SizedBox(width: 16.w),
                           Expanded(
@@ -224,7 +236,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
-                                  "You'll remain Online for as long as the is open",
+                                  "You'll remain Online for as long as the is open.",
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w400,
@@ -243,7 +255,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                               });
                             },
                             activeColor: AllColor.white,
-                            activeTrackColor: const Color(0xFFA8FF3F), // Lime green
+                            activeTrackColor: AllColor.switchcolor, // Lime green
                             inactiveThumbColor: AllColor.white,
                             inactiveTrackColor: AllColor.grey300,
                           ),
@@ -261,7 +273,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                           'First name',
                           style: TextStyle(
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: AllColor.black,
                             fontFamily: 'sf_pro',
                           ),
@@ -270,8 +282,12 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         Container(
                           height: 56.h,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF8F8F8), // Light grey
+                            color: AllColor.white,
                             borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: const Color(0xFFE0E0E0),
+                              width: 1,
+                            ),
                           ),
                           child: TextField(
                             controller: _firstNameController,
@@ -303,7 +319,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                           'Last name',
                           style: TextStyle(
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: AllColor.black,
                             fontFamily: 'sf_pro',
                           ),
@@ -312,8 +328,12 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         Container(
                           height: 56.h,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF8F8F8), // Light grey
+                            color: AllColor.white,
                             borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: const Color(0xFFE0E0E0),
+                              width: 1,
+                            ),
                           ),
                           child: TextField(
                             controller: _lastNameController,
@@ -345,7 +365,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                           'Number',
                           style: TextStyle(
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: AllColor.black,
                             fontFamily: 'sf_pro',
                           ),
@@ -359,24 +379,39 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                               child: Container(
                                 height: 56.h,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF8F8F8), // Light grey
+                                  color: AllColor.white,
                                   borderRadius: BorderRadius.circular(12.r),
+                                  border: Border.all(
+                                    color: const Color(0xFFE0E0E0),
+                                    width: 1,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
                                     SizedBox(width: 12.w),
-                                    // Saudi Arabia flag placeholder (you can replace with actual flag image)
+                                    // Saudi Arabia flag icon
                                     Container(
                                       width: 24.w,
-                                      height: 24.w,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AllColor.grey300,
+                                    height: 16.h,
+                                      decoration: const BoxDecoration(
+                                        // shape: BoxShape.circle,
+                                        borderRadius: BorderRadius.all(Radius.circular(5))
                                       ),
-                                      child: Icon(
-                                        Icons.flag,
-                                        size: 16.sp,
-                                        color: AllColor.grey600,
+                                      child: Image.asset(
+                                        'assets/images/flag.png',
+                                        width: 24.w,
+
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            color: const Color(0xFF4CAF50),
+                                            child: Icon(
+                                              Icons.flag,
+                                              size: 16.sp,
+                                              color: AllColor.white,
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                     SizedBox(width: 8.w),
@@ -406,8 +441,12 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                               child: Container(
                                 height: 56.h,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF8F8F8), // Light grey
+                                  color: AllColor.white,
                                   borderRadius: BorderRadius.circular(12.r),
+                                  border: Border.all(
+                                    color: const Color(0xFFE0E0E0),
+                                    width: 1,
+                                  ),
                                 ),
                                 child: TextField(
                                   controller: _phoneNumberController,
@@ -432,7 +471,149 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                       ],
                     ),
 
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 32.h),
+
+                    // About me Section
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'About me',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AllColor.black,
+                                fontFamily: 'sf_pro',
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => _handleEditBio('About me'),
+                              child: Text(
+                                'Edit Bio',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color(0xFF171717), // Blue/purple
+                                  fontFamily: 'sf_pro',
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        Container(
+                          width: double.infinity,
+                          constraints: BoxConstraints(minHeight: 200.h),
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            color: AllColor.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: const Color(0xFFE0E0E0),
+                              width: 1,
+                            ),
+                          ),
+                          child: TextField(
+                            controller: _aboutMeController,
+                            maxLines: null,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AllColor.black,
+                              fontFamily: 'sf_pro',
+                              height: 1.4,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 32.h),
+
+                    // Skills Section
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Skills',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AllColor.black,
+                                fontFamily: 'sf_pro',
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => _handleEditBio('Skills'),
+                              child: Text(
+                                'Edit Bio',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color(0xFF171717), // Blue/purple
+                                  fontFamily: 'sf_pro',
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        Wrap(
+                          spacing: 8.w,
+                          runSpacing: 8.h,
+                          children: _skills.map((skill) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.w,
+                                vertical: 8.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF8F8F8), // Light grey
+                                borderRadius: BorderRadius.circular(16.r),
+                                border: Border.all(
+                                  color: const Color(0xFFE0E0E0),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    skill,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: AllColor.black,
+                                      fontFamily: 'sf_pro',
+                                    ),
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Icon(
+                                    Icons.add,
+                                    size: 14.sp,
+                                    color: AllColor.black,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 32.h),
                   ],
                 ),
               ),
@@ -473,4 +654,31 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
       ),
     );
   }
+}
+
+// Custom painter for target/bullseye icon
+class _TargetIconPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..color = const Color(0xFF002807);
+
+    final fillPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xFF002807);
+
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 2;
+
+    // Draw outer circle
+    canvas.drawCircle(center, radius, paint);
+
+    // Draw inner filled circle
+    canvas.drawCircle(center, radius * 0.4, fillPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
