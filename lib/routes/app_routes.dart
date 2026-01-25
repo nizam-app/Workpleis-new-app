@@ -63,7 +63,9 @@ import '../features/client/profile/screen/take_photo_screen.dart';
 import '../features/client/profile/screen/billing_payment_screen.dart';
 import '../features/client/profile/screen/payment_card_screen.dart';
 import '../features/client/profile/screen/card_scan_screen.dart';
+import '../features/client/profile/screen/transfer_successful_screen.dart';
 import '../features/client/profile/screen/order_management_screen.dart';
+import '../features/service/screen/service_billing_payment_screen.dart';
 import '../features/client/profile/screen/settings_screen.dart';
 import '../features/client/profile/screen/notification_settings_screen.dart';
 import '../features/client/profile/screen/support_chat_screen.dart';
@@ -506,6 +508,11 @@ class AppRouter {
         builder: (context, state) => const BillingPaymentScreen(),
       ),
       GoRoute(
+        path: ServiceBillingPaymentScreen.routeName,
+        name: ServiceBillingPaymentScreen.routeName,
+        builder: (context, state) => const ServiceBillingPaymentScreen(),
+      ),
+      GoRoute(
         path: PaymentCardScreen.routeName,
         name: PaymentCardScreen.routeName,
         builder: (context, state) => const PaymentCardScreen(),
@@ -514,6 +521,11 @@ class AppRouter {
         path: CardScanScreen.routeName,
         name: CardScanScreen.routeName,
         builder: (context, state) => const CardScanScreen(),
+      ),
+      GoRoute(
+        path: TransferSuccessfulScreen.routeName,
+        name: TransferSuccessfulScreen.routeName,
+        builder: (context, state) => const TransferSuccessfulScreen(),
       ),
       GoRoute(
         path: OrderManagementScreen.routeName,

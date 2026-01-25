@@ -31,13 +31,8 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
   }
 
   void _handleContinue() {
-    // Handle continue logic here
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Payment card added successfully'),
-      ),
-    );
-    context.pop();
+    // Navigate to Card Scan screen
+    context.push(CardScanScreen.routeName);
   }
 
   Future<void> _handleScanCard() async {

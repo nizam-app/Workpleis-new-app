@@ -218,7 +218,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
                             width: 56.w,
                             height: 56.w,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50), // Standard green
+                              color: AllColor.switchcolor, // Standard green
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: AllColor.white,
@@ -233,7 +233,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
                           ),
                         ),
 
-                        SizedBox(width: 24.w),
+                        SizedBox(width: 15.w),
 
                         // Delete Button (Image 2)
                         GestureDetector(
@@ -244,7 +244,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
                             decoration: BoxDecoration(
                               color: _selectedImage != null
                                   ? Colors.red
-                                  : Colors.grey.shade300,
+                                  : Colors.red,
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: AllColor.white,
